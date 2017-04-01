@@ -1,6 +1,0 @@
-framework module APScheduledLocationManager {
-  umbrella header "APScheduledLocationManager-umbrella.h"
-
-  export *
-  module * { export * }
-}
