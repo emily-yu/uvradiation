@@ -11,11 +11,12 @@ import UIKit
 import Firebase
 
 class SignUpController: UIViewController {
-    
+        var ref:FIRDatabaseReference!
     @IBOutlet var email: UITextField!
     @IBOutlet var password: UITextField!
 
     @IBAction func createAccount(_ sender: Any) {
+                self.ref = FIRDatabase.database().reference()
         if email.text! == "" || password.text! == "" {
             let alertController = UIAlertController(title: "Error", message: "Please enter your email and password", preferredStyle: .alert)
             
@@ -28,6 +29,12 @@ class SignUpController: UIViewController {
             FIRAuth.auth()?.createUser(withEmail: email.text!, password: password.text!) { (user, error) in
                 
                 if error == nil {
+                    // set user details
+                    self.ref.child("users").child((user?.uid)!).setValue([
+                        "skintone": 0.0,
+                        "weight": 0.0 //in pounds
+                    ])
+
                     //login w/ new account
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "setup")
                     self.present(vc!, animated: true, completion: nil)
