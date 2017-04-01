@@ -17,21 +17,8 @@ import CoreLocation
 import Darwin
 
 
-<<<<<<< HEAD
 
 class SetupController: MotionViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-=======
-class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    private lazy var locationManager: CLLocationManager = {
-        let manager = CLLocationManager()
-        manager.desiredAccuracy = kCLLocationAccuracyBest
-        manager.delegate = self
-        manager.requestAlwaysAuthorization()
-        return manager
-    }()
-    
->>>>>>> dc3eb7a10c60df391854368b87f2c6f527118a2a
-    
     var ref = FIRDatabase.database().reference()
     @IBOutlet var weightValue: UITextField!
     
@@ -112,11 +99,7 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
 
 //        imagePicker.delegate = self
     }
-    
-    
-    
-    
-    
+
     func updateMotionViews(){
         var motion:CMDeviceMotion = self.motionManager.deviceMotion!
         var heading:CLHeading = self.locationManager.heading!
@@ -128,7 +111,7 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
         xData = Float(motion.magneticField.field.x);
         yData = Float(motion.magneticField.field.y);
         zData = Float(motion.magneticField.field.z);
-        self.updateProgress(xData: xData, yData: yData, zData: zData)
+        updateProgress(xData: xData, yData: yData, zData: zData)
     }
     
     func updateProgress(xData:Float, yData:Float, zData:Float) -> String{
@@ -183,7 +166,6 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
             });
         }
     }
-
 }
 
 extension SetupController: CLLocationManagerDelegate {
