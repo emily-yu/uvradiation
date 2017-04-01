@@ -9,9 +9,12 @@ from PIL import Image
 from io import BytesIO
 import json
 
+sl = [350, 420, 490, 560, 630, 700, 770]
+sn = ["1", "2", "3", "4", "5", "6"]
+
 def get_main_color(file):
-    img = Image.open(file)
-    colors = img.getcolors(256)
+    img = Image.open("image2.jpg")
+    colors = img.getcolors(16384)
     max_occurence, most_present = 0, 0
     try:
         for c in colors:
@@ -39,19 +42,19 @@ def index():
 
 login = ""
 
-
-@post('/login') 
+@post('/login')
+def login():
     global login
     image = urllib2.urlopen('https://uvdetection.firebaseio.com/image.json').read()
     image = image[1:-1]
     image = image.replace("\\r\\n", "")
-
+    
     fh = open("imageToSave.png", "wb")
     fh.write(image.decode('base64'))
     fh.close()
 
-    url = getUrl('banana.jpg')
-    print 'url is'
+    image = "imageToSave.png"
+    url = getUrl(image)
     print url
 
     data = {
@@ -74,14 +77,22 @@ login = ""
     height = same["height"]
     bottom = top - height
 
-    img = cv2.imread("banana.jpg")
-    crop_img = img[left:top, width:height] 
-    cv2.imshow("cropped", crop_img)
+    img = cv2.imread(image)
 
-    print same
-    return same
+    crop_img = img[top:top+height-5, left+15:left+width-5] 
+
+    cv2.imwrite("image2.jpg", crop_img)
+    same2 = get_main_color("image2.jpg")
+
+    print same2
+    total = same2[0]+same2[1]+same2[2]
+
+    for x in xrange(len(sn)):
+        if(total > sl[x] and total < sl[x+1]):
+            return sn[x]
 
 
+# print(same())
 
 @post('/loggedin')
 def loggedin():
