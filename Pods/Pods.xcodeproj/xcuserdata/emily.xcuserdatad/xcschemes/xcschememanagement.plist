@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>APScheduledLocationManager.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>GTMSessionFetcher.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -37,7 +42,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>871F245E481DD6FAA5864BF873BF261D</key>
+		<key>2629F2A9C43F48870DE3DEC54F6527B2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>44C9E8307FD25DA6C5F8FBAA486F0686</key>
 		<dict>
 			<key>primary</key>
 			<true/>

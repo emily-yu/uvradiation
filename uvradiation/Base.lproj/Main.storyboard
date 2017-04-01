@@ -137,6 +137,10 @@
                         </subviews>
                         <color key="backgroundColor" red="0.38887169960000001" green="0.59068608280000001" blue="0.85495400430000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </view>
+                    <connections>
+                        <outlet property="necessaryVitaminD" destination="owj-M0-meo" id="xag-ss-tSF"/>
+                        <outlet property="timeValue" destination="CdZ-5s-lzg" id="r1h-GT-xjU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bnk-kC-gxK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

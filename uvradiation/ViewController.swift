@@ -12,7 +12,9 @@ import CoreMotion
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
+    @IBOutlet var necessaryVitaminD: UILabel!
     @IBOutlet var weightValue: UITextField! //weight
+    @IBOutlet var timeValue: UILabel!
     
     // OpenWeatherAPI
     private let openWeatherMapBaseURL = "http://api.openweathermap.org/v3/uvi/"
