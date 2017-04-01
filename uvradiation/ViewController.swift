@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import CoreMotion
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -21,6 +22,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     private var sublatNumb:String = ""
     private var sublongNumb:String = ""
     let session = URLSession(configuration: URLSessionConfiguration.default)
+    
+    let motionManager = CMMotionManager()
+    var timer: Timer!
+    //fkin around
+    func update() {
+        if let accelerometerData = motionManager.accelerometerData {
+            print(accelerometerData)
+        }
+        if let gyroData = motionManager.gyroData {
+            print(gyroData)
+        }
+        if let magnetometerData = motionManager.magnetometerData {
+            print(magnetometerData)
+        }
+        if let deviceMotion = motionManager.deviceMotion {
+            print(deviceMotion)
+        }
+    }
     
     // locationManager - get your latitutde/longitutde
     var locationManager = CLLocationManager()
@@ -119,6 +138,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         if (tempSkinTone < initSkinTone){
             necessaryTime += (initSkinTone - tempSkinTone)*10.0 // update time for skin color
         }
+        
+        motionManager.startAccelerometerUpdates()
+        motionManager.startGyroUpdates()
+        motionManager.startMagnetometerUpdates()
+        motionManager.startDeviceMotionUpdates()
+        
+        timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
         
         loadData()
         startTimer()

@@ -258,6 +258,7 @@
 				TargetAttributes = {
 					A15F5BF11E8F483300AA6F6B = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = HSYD3ZBRT6;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -627,7 +628,7 @@
 			baseConfigurationReference = CD7B537CB2EFBC80585628D6 /* Pods-uvradiation.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = HSYD3ZBRT6;
 				INFOPLIST_FILE = uvradiation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.eyu.uvradiation;
@@ -641,7 +642,7 @@
 			baseConfigurationReference = 8E83131ED07927A18877CC89 /* Pods-uvradiation.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = HSYD3ZBRT6;
 				INFOPLIST_FILE = uvradiation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.eyu.uvradiation;
