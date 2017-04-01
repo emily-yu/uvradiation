@@ -10,7 +10,11 @@ import Foundation
 import UIKit
 import Firebase
 
+var maxVitaminDIntake: Double!
+
 class LoginController: UIViewController {
+    
+    var ref:FIRDatabaseReference!
     @IBOutlet var email: UITextField!
     @IBOutlet var password: UITextField!
     @IBAction func fadeButton(_ sender: Any) {
@@ -41,6 +45,13 @@ class LoginController: UIViewController {
                     
                     //Print into the console if successfully logged in
                     print("You have successfully logged in")
+                    self.ref = FIRDatabase.database().reference()
+                    let userID = FIRAuth.auth()!.currentUser!.uid
+                    self.ref.child("users").child(userID).child("maxDIntake").observeSingleEvent(of: .value, with: { (snapshot) in
+                        if let same = snapshot.value! as? Double{
+                            maxVitaminDIntake = same
+                        }
+                    })
                     
                     //Go to the HomeViewController if the login is sucessful
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "Home")

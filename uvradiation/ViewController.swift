@@ -13,12 +13,13 @@ import Firebase
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
-    @IBOutlet var necessaryVitaminD: UILabel!
-    @IBOutlet var weightValue: UITextField! //weight
-    @IBOutlet var timeValue: UILabel!
+    @IBOutlet var totalDIntake: UILabel!
+    var pigmentColor: Double!
+    @IBOutlet var pigmentColorText: UILabel!
     
     // OpenWeatherAPI
     private let openWeatherMapBaseURL = "http://api.openweathermap.org/v3/uvi/"
+    private let ngrok = "http://c3ac4ba2.ngrok.io/"
     private let openWeatherMapAPIKey = "3b4d5042582e6a05ef5feaa2d9ef4d0d" // <YOUR API KEY>
     private var latNumb:Int!
     private var longNumb:Int!
@@ -91,7 +92,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             })
         }
         else{
-            let url = URL(string: String("http://28f3ca05.ngrok.io/update?user=\(FIRAuth.auth()?.currentUser?.uid)&action=stop"))
+            print (FIRAuth.auth()?.currentUser?.uid)
+            let url = URL(string: String(ngrok + "/update?user=\((FIRAuth.auth()?.currentUser?.uid)!)&action=stop"))
             print(url)
             
             let task = session.dataTask(with: url!, completionHandler: {
@@ -99,13 +101,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 if error != nil {
                     print(error!.localizedDescription)
+                    print("got into here")
                 }
                     // success
                 else {
                     do {
+                        print("wtf")
                         print(data!)
                     }
                     catch {
+                        print("oph")
                         print("error in JSONSerialization")
                     }
                 }
@@ -182,6 +187,31 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 //    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let userID = FIRAuth.auth()!.currentUser!.uid
+                self.ref = FIRDatabase.database().reference()
+        // set pigment color
+        self.ref.child("users").child(userID).child("skintone").observeSingleEvent(of: .value, with: { (snapshot) in
+            if let same = snapshot.value! as? Double{ // or whatever shit it is
+                self.pigmentColor = same
+                print(same)
+                self.pigmentColorText.text = String(self.pigmentColor)
+            }
+        })
+    
+        //set daily vitamin d intake
+
+        self.ref.child("users").child(userID).child("maxDIntake").observeSingleEvent(of: .value, with: { (snapshot) in
+            if let same = snapshot.value! as? Double{
+                maxVitaminDIntake = same
+                print(same)
+                self.totalDIntake.text = String(maxVitaminDIntake)
+            }
+        })
+        
+//        totalDIntake.text = String(maxVitaminD)
+        print("HEY ITS ME")
+        print(maxVitaminD)
         
         self.ref = FIRDatabase.database().reference()
         // time adjustments

@@ -39,7 +39,8 @@ class SignUpController: UIViewController {
                     // set user details
                     self.ref.child("users").child((user?.uid)!).setValue([
                         "skintone": 0.0,
-                        "weight": 0.0 //in pounds
+                        "weight": 0.0,  //in pounds
+                        "maxDIntake": 0.0,
                     ])
 
                     //login w/ new account

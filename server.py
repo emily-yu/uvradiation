@@ -36,17 +36,16 @@ def getUrl(path):
     json1_data = json.loads(data)
     return json1_data["data"]["img_url"]
 
-global action = "stop"
+global action
 
 def timer(action, uid):
     start = time.time()
     time.clock()    
     elapsed = 0
-    while action != stop:
+    while action == "start":
         elapsed = time.time() - start
-        print "loop cycle time: %f, seconds count: %02d" % (time.clock() , elapsed) 
         time.sleep(1)
-    if action == stop:
+    if action == "stop":
         time = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json').read()
         total = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'totalTime.json').read()
 
@@ -59,7 +58,6 @@ def timer(action, uid):
         r = requests.put('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json', data=same)
         r2 = requests.put('https://uvdetection.firebaseio.com/users' + uid + 'totalTime.json', data = same1);
 
-  'https://[PROJECT_ID].firebaseio-demo.com/users/jack/name.json'
 
 @route('/')
 def index():
@@ -80,7 +78,7 @@ def login():
 
     image = "imageToSave.png"
     url = getUrl(image)
-    print url
+    print (url)
 
     data = {
         'url': url
@@ -108,19 +106,19 @@ def login():
     cv2.imwrite("image2.jpg", crop_img)
     same2 = get_main_color("image2.jpg")
 
-    print same2
+    print (same2)
     total = same2[0]+same2[1]+same2[2]
 
     for x in xrange(len(sn)):
         if(total > sl[x] and total < sl[x+1]):
-            print sn[x]
+            print (sn[x])
             return sn[x]
 
 
 @get('/reset')
 def reseto():
     global login
-    print "reset"
+    print ("reset")
     login = ""
 
 
@@ -130,9 +128,7 @@ def start():
     same = request.args
     userid = same["user"]
     action = same["action"]
-    
-
-stopwatch(20)
+    timer(action, userid)
     # image = urllib2.urlopen('https://uvdetection.firebaseio.com/base64string.json').read()
 
 
