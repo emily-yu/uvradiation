@@ -99,5 +99,8 @@ def reseto():
     login = ""
 
 
+@get('/update')
+def hai():
+    print "hallo"
 
 run(host='localhost', port=8000)

@@ -13,6 +13,7 @@ import FirebaseDatabase
 import AVFoundation
 import MobileCoreServices
 import CoreTelephony
+import CoreLocation
 
 
 class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -108,67 +109,75 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
     override func viewDidLoad() {
         super.viewDidLoad()
         print ("AORWEFKJOACWEICMEICMEJCJECIOWEDC")
-        print (getSignalStrength())
+        locationManager.startUpdatingLocation()
+
 //        imagePicker.delegate = self
     }
 
 }
 
-extension LocationViewController: CLLocationManagerDelegate {
+extension SetupController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let mostRecentLocation = locations.last else {
             return
         }
         
-        var ref = FIRDatabase.database().reference()
-        ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("latitude").setValue(mostRecentLocation.latitude)
-        ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("longitude").setValue(mostRecentLocation.longitude)
+        let userId = (FIRAuth.auth()?.currentUser?.uid)!
+        let ref = FIRDatabase.database().reference()
+        ref.child("users").child(userId).child("latitude").setValue(mostRecentLocation.coordinate.latitude)
+        ref.child("users").child(userId).child("longitude").setValue(mostRecentLocation.coordinate.longitude)
         
+        print ("got into hereee")
         print(mostRecentLocation.speed)
         
         let mph = mostRecentLocation.speed*2.23694
         if(mph > 3 && mph < 30){
-            ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("speed").child("state").setValue("outside")
+            ref.child("users").child(userId).child("speed").child("state").setValue("outside")
         }
         else{
-            ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("speed").child("state").setValue("inside")
+            ref.child("users").child(userId).child("speed").child("state").setValue("inside")
         }
         
         let signal = getSignalStrength()
-        ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("signal").observeSingleEvent(of: .value, with: { snapshot in
+        ref.child("users").child(userId).child("signal").observeSingleEvent(of: .value, with: { snapshot in
             
 //            let value = snapshot.value as? String;
             
             if !snapshot.exists() {
-                ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("signal").child("now").setValue("\(signal)")
+                ref.child("users").child(userId).child("signal").child("now").setValue("\(signal)")
             }
             else {
                 if let dict = snapshot.value as? [String:AnyObject]{
-                    if let value = dict["last"] as? String{
-                        ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("signal").child("last").setValue("\(value)")
-                        ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("signal").child("now").setValue("\(signal)")
-                    }
-                    
-                    if let state = dict["state"] as? String{
-                        if (((signal + 2) < value) || (signal - 2) > value){
-                            if(state == "inside"){
-                                ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("signal").child("state").setValue("outside")
-                            }
-                            else{
-                                ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("signal").child("state").setValue("inside")
+                    if let value = dict["last"] as? Int{
+                        ref.child("users").child(userId).child("signal").child("last").setValue("\(value)")
+                        ref.child("users").child(userId).child("signal").child("now").setValue("\(signal)")
+                        if let state = dict["state"] as? String{
+                            if (((signal + 2) < value) || (signal - 2) > value){
+                                if(state == "inside"){
+                                    ref.child("users").child(userId).child("signal").child("state").setValue("outside")
+                                }
+                                else{
+                                    ref.child("users").child(userId).child("signal").child("state").setValue("inside")
+                                }
                             }
                         }
                     }
-                    
                 }
-
             }
         })
-
+        
+        let url = URL(string: "http://28f3ca05.ngrok.io/update?user=\(userId)")
+        
+        let task = URLSession.shared.dataTask(with: url!) {(data, response, error) in
+//            print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+        }
+        
+        task.resume()
+        
         
         if UIApplication.shared.applicationState == .active {
-            mapView.showAnnotations(self.locations, animated: true)
+            
         } else {
             print("App is backgrounded. New location is %@", mostRecentLocation)
         }
