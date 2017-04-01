@@ -29,11 +29,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         print("locations = \(locValue.latitude) \(locValue.longitude)")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        var maxVitaminD = Int(weightValue.text!)*27*0.8
-        
+    func loadData() {
         // Do any additional setup after loading the view, typically from a nib.
         
         // Get User Initial Location
@@ -50,7 +46,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         sublongNumb = String(Int(locValue.longitude))
         print(sublatNumb)
         print(sublongNumb)
-//        let url = URL(string: String("\(openWeatherMapBaseURL)?APPID=\(openWeatherMapAPIKey)&lat=\(sublatNumb)&lon=\(sublongNumb)"))
+        //        let url = URL(string: String("\(openWeatherMapBaseURL)?APPID=\(openWeatherMapAPIKey)&lat=\(sublatNumb)&lon=\(sublongNumb)"))
         let url = URL(string: String("\(openWeatherMapBaseURL)\(sublatNumb),\(sublongNumb)/2017-03-01Z.json?appid=3b4d5042582e6a05ef5feaa2d9ef4d0d"))
         print(url)
         
@@ -69,15 +65,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                         //Implement your logic
                         print(json)
                         
-                        //retrieve sunrise value
-//                        let main = json["sys"] as? Dictionary<String, AnyObject>
-//                        if let temp = main?["sunrise"] as? Double { // prints temp element
-//                            print(temp)
-//                        }
                         let number = json["data"] as? Double
                         print(number) // uv index
+                        self.currentUVIndex = Double(number!)
                         
-                       
                     }
                 }
                 catch {
@@ -86,13 +77,54 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }
         })
         task.resume()
+    }
+
+    
+    weak var timer: Timer?
+    var currentUVIndex = 0.0
+    var initSkinTone = 1.0 // for pale people
+    var tempSkinTone = 3.0 // lower is lighter (1 lightest, 6 darkest)
+    var rate = 0.0
+    var necessaryTime = 20.0 //min
+    
+    func startTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] _ in
+            print("same")
+        var tempindex = self?.currentUVIndex
+        self?.loadData()
+            if (tempindex != self?.currentUVIndex){
+                var change = (self?.currentUVIndex)! - tempindex!
+                print(change)
+            }
+            
+        }
+    }
+    
+    func stopTimer() {
+        timer?.invalidate()
+    }
+    
+    // if appropriate, make sure to stop your timer in `deinit`
+//    
+//    deinit {
+//        stopTimer()
+//    }
+//    
+//    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        print("its me")
-//        return true
+        // time adjustments
+        rate = (tempSkinTone - initSkinTone)*0.1 // set rate of same
+        if (tempSkinTone < initSkinTone){
+            necessaryTime += (initSkinTone - tempSkinTone)*10.0 // update time for skin color
+        }
+        
+        loadData()
+        startTimer()
     }
     
     
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

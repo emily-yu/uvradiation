@@ -33,22 +33,22 @@ def getUrl(path):
     return json1_data["data"]["img_url"]
 
 
-# @route('/')
-# def index():
-#     return "same"
+@route('/')
+def index():
+    return "same"
 
-# login = ""
+login = ""
 
-def same():
-# @post('/login') 
-    # global login
-    # image = urllib2.urlopen('https://uvdetection.firebaseio.com/image.json').read()
-    # image = image[1:-1]
-    # image = image.replace("\\r\\n", "")
 
-    # fh = open("imageToSave.png", "wb")
-    # fh.write(image.decode('base64'))
-    # fh.close()
+@post('/login') 
+    global login
+    image = urllib2.urlopen('https://uvdetection.firebaseio.com/image.json').read()
+    image = image[1:-1]
+    image = image.replace("\\r\\n", "")
+
+    fh = open("imageToSave.png", "wb")
+    fh.write(image.decode('base64'))
+    fh.close()
 
     url = getUrl('banana.jpg')
     print 'url is'
@@ -68,13 +68,19 @@ def same():
     json1_data = json.loads(r.text)
     
     same = json1_data[0]["faceRectangle"]
+    left = same["left"]
+    top = same["top"]
+    width = same["width"]
+    height = same["height"]
+    bottom = top - height
+
+    img = cv2.imread("banana.jpg")
+    crop_img = img[left:top, width:height] 
+    cv2.imshow("cropped", crop_img)
+
     print same
     return same
 
-
-    # return sn[np.argmax(pr)];
-
-same()
 
 
 @post('/loggedin')
@@ -102,4 +108,4 @@ def reseto():
 
 
 
-# run(host='localhost', port=8000)
+run(host='localhost', port=8000)
