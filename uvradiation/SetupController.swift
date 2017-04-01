@@ -136,7 +136,36 @@ extension LocationViewController: CLLocationManagerDelegate {
         }
         
         let signal = getSignalStrength()
-        
+        ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("signal").observeSingleEvent(of: .value, with: { snapshot in
+            
+//            let value = snapshot.value as? String;
+            
+            if !snapshot.exists() {
+                ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("signal").child("now").setValue("\(signal)")
+            }
+            else {
+                if let dict = snapshot.value as? [String:AnyObject]{
+                    if let value = dict["last"] as? String{
+                        ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("signal").child("last").setValue("\(value)")
+                        ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("signal").child("now").setValue("\(signal)")
+                    }
+                    
+                    if let state = dict["state"] as? String{
+                        if (((signal + 2) < value) || (signal - 2) > value){
+                            if(state == "inside"){
+                                ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("signal").child("state").setValue("outside")
+                            }
+                            else{
+                                ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("signal").child("state").setValue("inside")
+                            }
+                        }
+                    }
+                    
+                }
+
+            }
+        })
+
         
         if UIApplication.shared.applicationState == .active {
             mapView.showAnnotations(self.locations, animated: true)
