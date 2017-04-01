@@ -82,11 +82,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     weak var timer: Timer?
     var currentUVIndex = 0.0
-    var initSkinTone = 6 // for pale people
+    var initSkinTone = 1.0 // for pale people
+    var tempSkinTone = 3.0 // lower is lighter (1 lightest, 6 darkest)
+    var rate = 0.0
+    var necessaryTime = 20.0 //min
     
     func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] _ in
-print("same")
+            print("same")
         var tempindex = self?.currentUVIndex
         self?.loadData()
             if (tempindex != self?.currentUVIndex){
@@ -110,6 +113,13 @@ print("same")
 //    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // time adjustments
+        rate = (tempSkinTone - initSkinTone)*0.1 // set rate of same
+        if (tempSkinTone < initSkinTone){
+            necessaryTime += (initSkinTone - tempSkinTone)*10.0 // update time for skin color
+        }
+        
         loadData()
         startTimer()
     }
