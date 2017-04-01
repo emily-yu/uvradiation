@@ -73,7 +73,7 @@
         <!--View Controller-->
         <scene sceneID="gq1-54-Gyt">
             <objects>
-                <viewController id="qxV-07-U0r" customClass="ViewController" customModule="uvradiation" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Home" id="qxV-07-U0r" customClass="ViewController" customModule="uvradiation" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="egV-5R-fea"/>
                         <viewControllerLayoutGuide type="bottom" id="HTk-iC-THE"/>
@@ -202,6 +202,9 @@
                                 <rect key="frame" x="167" y="454" width="41" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Finish"/>
+                                <connections>
+                                    <action selector="finish:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gAL-id-DPd"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Lf-hk-H6v">
                                 <rect key="frame" x="150" y="211" width="74" height="30"/>
@@ -219,6 +222,9 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
+                    <connections>
+                        <outlet property="weightValue" destination="LAT-VH-VB9" id="RHw-QG-lBp"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

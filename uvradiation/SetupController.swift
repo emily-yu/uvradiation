@@ -18,6 +18,7 @@ var imagepickedtbh:UIImage!
 class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var ref = FIRDatabase.database().reference()
+    @IBOutlet var weightValue: UITextField!
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         print("same")
@@ -90,6 +91,17 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
         
     }
     
+    @IBAction func finish(_ sender: Any) {
+        let userID = FIRAuth.auth()!.currentUser!.uid
+        self.ref.child("users").child(userID).setValue([
+            "weight": self.weightValue.text!,
+            "skintone": 0.0 // do shit?
+        ])
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "Home")
+        self.present(vc!, animated: true, completion: nil)
+
+    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
