@@ -8,6 +8,8 @@ import requests
 from PIL import Image
 from io import BytesIO
 import json
+import time
+import timer
 
 sl = [350, 420, 490, 560, 630, 700, 770]
 sn = ["6", "5", "4", "3", "2", "1"]
@@ -101,6 +103,10 @@ def reseto():
 
 @get('/update')
 def hai():
-    print "hallo"
+    same = request.args
+    userid = same["user"]
+    image = urllib2.urlopen('https://uvdetection.firebaseio.com/base64string.json').read()
+
+
 
 run(host='localhost', port=8000)

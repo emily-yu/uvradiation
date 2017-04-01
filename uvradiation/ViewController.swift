@@ -30,9 +30,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func loadData() {
-        // Do any additional setup after loading the view, typically from a nib.
-        
-        // Get User Initial Location
         self.locationManager.requestAlwaysAuthorization()         // Ask for Authorisation from the User.
         self.locationManager.requestWhenInUseAuthorization()            // For use in foreground
         if CLLocationManager.locationServicesEnabled() {
@@ -40,6 +37,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
         }
+        
         var locValue:CLLocationCoordinate2D = locationManager.location!.coordinate
         print("locations = \(locValue.latitude) \(locValue.longitude)")
         sublatNumb = String(Int(locValue.latitude))

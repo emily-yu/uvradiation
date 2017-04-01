@@ -14,9 +14,11 @@ import AVFoundation
 import MobileCoreServices
 import CoreTelephony
 import CoreLocation
+import Darwin
 
 
-class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+class SetupController: MotionViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var ref = FIRDatabase.database().reference()
     @IBOutlet var weightValue: UITextField!
@@ -113,6 +115,77 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
 
 //        imagePicker.delegate = self
     }
+    
+    
+    
+    
+    
+    func updateMotionViews(){
+        var motion:CMDeviceMotion = self.motionManager.deviceMotion!
+        var heading:CLHeading = self.locationManager.heading!
+        
+        var xData:Float = Float()
+        var yData:Float = Float()
+        var zData:Float = Float()
+        
+        xData = Float(motion.magneticField.field.x);
+        yData = Float(motion.magneticField.field.y);
+        zData = Float(motion.magneticField.field.z);
+        self.updateProgress(xData: xData, yData: yData, zData: zData)
+    }
+    
+    func updateProgress(xData:Float, yData:Float, zData:Float) -> String{
+        let magnitude:Float = sqrt(xData*xData + yData*yData + zData*zData)
+        print ("got here")
+        return "\(magnitude)"
+    }
+    
+    func pullMotionAddictions(){
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        self.locationManager.distanceFilter = 0.0001;
+        self.locationManager.headingFilter = kCLHeadingFilterNone;
+        if(CLLocationManager.headingAvailable()){
+            self.locationManager.startUpdatingHeading()
+        }
+        
+        if (self.motionManager.isMagnetometerActive) {
+            self.motionManager.startMagnetometerUpdates();
+        }
+        
+        if (self.motionManager.isDeviceMotionActive){
+            self.motionManager.startDeviceMotionUpdates(using: CMAttitudeReferenceFrame.xMagneticNorthZVertical)
+        }
+    }
+    
+    
+    func pushMotionAddictions(){
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        self.locationManager.distanceFilter = 0.0001;
+        self.locationManager.headingFilter = kCLHeadingFilterNone;
+        if (CLLocationManager.headingAvailable()) {
+            self.locationManager.startUpdatingHeading()
+        }
+        
+        self.motionManager.deviceMotionUpdateInterval = Double(self.samplingFrequency);
+        self.sampleQueue.maxConcurrentOperationCount = 1
+        
+        let magnetometerData:CMMagnetometerData!
+        let _:NSError!
+        
+        if (self.motionManager.isMagnetometerAvailable) {
+            self.motionManager.startMagnetometerUpdates(to: self.sampleQueue, withHandler:{
+                magnetometerData,error in
+                print("hallo")
+            });
+        }
+        
+        if (self.motionManager.isDeviceMotionActive) {
+            self.motionManager.startDeviceMotionUpdates(using: CMAttitudeReferenceFrame.xMagneticNorthZVertical, to: self.sampleQueue, withHandler:{
+                magnetometerData,error in
+                print("hallo")
+            });
+        }
+    }
 
 }
 
@@ -204,7 +277,5 @@ extension SetupController: CLLocationManagerDelegate {
         return dataNetworkItemView.value(forKey: "signalStrengthBars") as! Int
         
     }
-
-    
 }
 

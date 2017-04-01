@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0AE9660D1E8FF00D00AB3B55 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE9660C1E8FF00D00AB3B55 /* QuartzCore.framework */; };
+		0AE966111E8FF10E00AB3B55 /* MotionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE966101E8FF10E00AB3B55 /* MotionViewController.m */; };
+		0AE966141E8FF14400AB3B55 /* CLMManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE966131E8FF14400AB3B55 /* CLMManager.m */; };
 		4E5569A1DA98EAEFBF3F202A /* Pods_uvradiation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11307B2DBD7F9A3092BADCFB /* Pods_uvradiation.framework */; };
 		8F0FC048468B780F3330D633 /* Pods_uvradiationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110292950BECBA4BA9240F41 /* Pods_uvradiationTests.framework */; };
 		A15F5BF61E8F483300AA6F6B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15F5BF51E8F483300AA6F6B /* AppDelegate.swift */; };
@@ -42,6 +45,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0AE9660C1E8FF00D00AB3B55 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		0AE9660E1E8FF10E00AB3B55 /* uvradiation-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "uvradiation-Bridging-Header.h"; sourceTree = "<group>"; };
+		0AE9660F1E8FF10E00AB3B55 /* MotionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MotionViewController.h; sourceTree = "<group>"; };
+		0AE966101E8FF10E00AB3B55 /* MotionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MotionViewController.m; sourceTree = "<group>"; };
+		0AE966121E8FF14400AB3B55 /* CLMManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLMManager.h; sourceTree = "<group>"; };
+		0AE966131E8FF14400AB3B55 /* CLMManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLMManager.m; sourceTree = "<group>"; };
 		110292950BECBA4BA9240F41 /* Pods_uvradiationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_uvradiationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		11307B2DBD7F9A3092BADCFB /* Pods_uvradiation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_uvradiation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		24CFD20301649F6F054C97D3 /* Pods-uvradiationUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-uvradiationUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-uvradiationUITests/Pods-uvradiationUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -76,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AE9660D1E8FF00D00AB3B55 /* QuartzCore.framework in Frameworks */,
 				A15F5C2C1E8FC75100AA6F6B /* CoreTelephony.framework in Frameworks */,
 				4E5569A1DA98EAEFBF3F202A /* Pods_uvradiation.framework in Frameworks */,
 			);
@@ -103,6 +113,7 @@
 		301D0DF533A5B35BDF9CE9C2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0AE9660C1E8FF00D00AB3B55 /* QuartzCore.framework */,
 				A15F5C2B1E8FC75100AA6F6B /* CoreTelephony.framework */,
 				11307B2DBD7F9A3092BADCFB /* Pods_uvradiation.framework */,
 				110292950BECBA4BA9240F41 /* Pods_uvradiationTests.framework */,
@@ -141,11 +152,16 @@
 				A15F5C231E8F9E6600AA6F6B /* LoginController.swift */,
 				A15F5C271E8FA14200AA6F6B /* SignUpController.swift */,
 				A15F5C291E8FA7FE00AA6F6B /* SetupController.swift */,
+				0AE9660F1E8FF10E00AB3B55 /* MotionViewController.h */,
+				0AE966101E8FF10E00AB3B55 /* MotionViewController.m */,
+				0AE966121E8FF14400AB3B55 /* CLMManager.h */,
+				0AE966131E8FF14400AB3B55 /* CLMManager.m */,
 				A15F5BF91E8F483300AA6F6B /* Main.storyboard */,
 				A15F5BFC1E8F483300AA6F6B /* Assets.xcassets */,
 				A15F5BFE1E8F483300AA6F6B /* LaunchScreen.storyboard */,
 				A15F5C011E8F483300AA6F6B /* Info.plist */,
 				A15F5C251E8F9EC000AA6F6B /* GoogleService-Info.plist */,
+				0AE9660E1E8FF10E00AB3B55 /* uvradiation-Bridging-Header.h */,
 			);
 			path = uvradiation;
 			sourceTree = "<group>";
@@ -258,6 +274,8 @@
 				TargetAttributes = {
 					A15F5BF11E8F483300AA6F6B = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = W82EHQ5KSA;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -472,7 +490,9 @@
 			files = (
 				A15F5BF81E8F483300AA6F6B /* ViewController.swift in Sources */,
 				A15F5C241E8F9E6600AA6F6B /* LoginController.swift in Sources */,
+				0AE966111E8FF10E00AB3B55 /* MotionViewController.m in Sources */,
 				A15F5BF61E8F483300AA6F6B /* AppDelegate.swift in Sources */,
+				0AE966141E8FF14400AB3B55 /* CLMManager.m in Sources */,
 				A15F5C2A1E8FA7FE00AA6F6B /* SetupController.swift in Sources */,
 				A15F5C281E8FA14200AA6F6B /* SignUpController.swift in Sources */,
 			);
@@ -627,11 +647,14 @@
 			baseConfigurationReference = CD7B537CB2EFBC80585628D6 /* Pods-uvradiation.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = W82EHQ5KSA;
 				INFOPLIST_FILE = uvradiation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.eyu.uvradiation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "uvradiation/uvradiation-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -641,11 +664,13 @@
 			baseConfigurationReference = 8E83131ED07927A18877CC89 /* Pods-uvradiation.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = W82EHQ5KSA;
 				INFOPLIST_FILE = uvradiation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.eyu.uvradiation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "uvradiation/uvradiation-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
