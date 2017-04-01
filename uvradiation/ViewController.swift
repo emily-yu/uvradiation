@@ -99,7 +99,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     
-    weak var timer: Timer?
+    var timer2: Timer?
     var currentUVIndex = 0.0
     var initSkinTone = 1.0 // for pale people
     var tempSkinTone = 3.0 // lower is lighter (1 lightest, 6 darkest)
@@ -107,7 +107,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var necessaryTime = 20.0 //min
     
     func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] _ in
+        timer2 = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] _ in
             print("same")
         var tempindex = self?.currentUVIndex
         self?.loadData()
