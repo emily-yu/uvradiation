@@ -22,13 +22,13 @@ def get_main_color(file):
             if c[0] > max_occurence:
                 (max_occurence, most_present) = c
         return most_present
-    except TypeError:
-        raise Exception("Too many colors in the image")
+    except TypeError:  
+        return 3
 
 def getUrl(path):
     files = {
         ('upload', open(path,'rb')),
-    }
+    }   
 
     same = requests.post('http://uploads.im/api', files=files)
 
@@ -60,15 +60,18 @@ def timer(action, uid):
         r2 = requests.put('https://uvdetection.firebaseio.com/users' + uid + 'totalTime.json', data = same1);
 
 
-@route('/')
-def index():
-    return "same"
+# @route('/')
+# def index():
+#     return "same"
 
-login = ""
+# login = ""
 
-@get('/login')
-def login():
+# print "hi"
+# @get('/login')
+
+def same():
     global login
+    print "got here"
     image = urllib2.urlopen('https://uvdetection.firebaseio.com/base64string.json').read()
     image = image[1:-1]
     image = image.replace("\\r\\n", "")
@@ -76,6 +79,7 @@ def login():
     fh = open("imageToSave.png", "wb")
     fh.write(image.decode('base64'))
     fh.close()
+
 
     image = "imageToSave.png"
     url = getUrl(image)
@@ -101,34 +105,35 @@ def login():
     height = same["height"]
 
     img = cv2.imread(image)
-
-    crop_img = img[top:top+height-5, left+15:left+width-5] 
+    print width
+    print height
+    crop_img = img[top:top+height-5, left:left+width-5] 
 
     cv2.imwrite("image2.jpg", crop_img)
     same2 = get_main_color("image2.jpg")
 
     print same2
     total = same2[0]+same2[1]+same2[2]
-
+    print "hallo"
     for x in xrange(len(sn)):
         if(total > sl[x] and total < sl[x+1]):
             print sn[x]
             return sn[x]
 
-
-@get('/reset')
-def reseto():
-    global login
-    print "reset"
-    login = ""
+same()
 
 
 @get('/update')
-def start():
+def update():
     global action
-    same = request.args
+    print "got here"
+    # same = request.args
+    print request
+    print same
     userid = same["user"]
     action = same["action"]
+    print userid
+    print action
     timer(action, userid)
     return {"HALLO", "ya"}
 
