@@ -65,7 +65,53 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         print("locations = \(locValue.latitude) \(locValue.longitude)")
         print ("got here")
         ref.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("speed").setValue(locationManager.location!.speed)
-
+        
+        
+        if(locationManager.location!.speed > 3 && locationManager.location!.speed < 30) {
+            let url = URL(string: String("http://28f3ca05.ngrok.io/update?user=\(FIRAuth.auth()?.currentUser?.uid)&action=start"))
+            print(url)
+            
+            // Handle api calls
+            let task = session.dataTask(with: url!, completionHandler: {
+                (data, response, error) in
+                
+                // if no error
+                if error != nil {
+                    print(error!.localizedDescription)
+                }
+                    // success
+                else {
+                    do {
+                        print(data!)
+                    }
+                    catch {
+                        print("error in JSONSerialization")
+                    }
+                }
+            })
+        }
+        else{
+            let url = URL(string: String("http://28f3ca05.ngrok.io/update?user=\(FIRAuth.auth()?.currentUser?.uid)&action=stop"))
+            print(url)
+            
+            let task = session.dataTask(with: url!, completionHandler: {
+                (data, response, error) in
+                
+                if error != nil {
+                    print(error!.localizedDescription)
+                }
+                    // success
+                else {
+                    do {
+                        print(data!)
+                    }
+                    catch {
+                        print("error in JSONSerialization")
+                    }
+                }
+            })
+        }
+        
         sublatNumb = String(Int(locValue.latitude))
         sublongNumb = String(Int(locValue.longitude))
         

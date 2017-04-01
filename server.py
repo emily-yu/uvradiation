@@ -9,7 +9,6 @@ from PIL import Image
 from io import BytesIO
 import json
 import time
-import timer
 
 sl = [350, 420, 490, 560, 630, 700, 770]
 sn = ["6", "5", "4", "3", "2", "1"]
@@ -37,6 +36,30 @@ def getUrl(path):
     json1_data = json.loads(data)
     return json1_data["data"]["img_url"]
 
+global action = "stop"
+
+def timer(action, uid):
+    start = time.time()
+    time.clock()    
+    elapsed = 0
+    while action != stop:
+        elapsed = time.time() - start
+        print "loop cycle time: %f, seconds count: %02d" % (time.clock() , elapsed) 
+        time.sleep(1)
+    if action == stop:
+        time = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json').read()
+        total = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'totalTime.json').read()
+
+        newTime = elapsed + time;
+        totalTime = elapsed + total;
+
+        same = newTime
+        same1 = totalTime
+
+        r = requests.put('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json', data=same)
+        r2 = requests.put('https://uvdetection.firebaseio.com/users' + uid + 'totalTime.json', data = same1);
+
+  'https://[PROJECT_ID].firebaseio-demo.com/users/jack/name.json'
 
 @route('/')
 def index():
@@ -102,10 +125,18 @@ def reseto():
 
 
 @get('/update')
-def hai():
+def start():
+    global action
     same = request.args
     userid = same["user"]
-    image = urllib2.urlopen('https://uvdetection.firebaseio.com/base64string.json').read()
+    action = same["action"]
+    
+
+stopwatch(20)
+    # image = urllib2.urlopen('https://uvdetection.firebaseio.com/base64string.json').read()
+
+
+
 
 
 
