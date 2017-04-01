@@ -36,17 +36,17 @@ def getUrl(path):
     json1_data = json.loads(data)
     return json1_data["data"]["img_url"]
 
-global action = "stop"
+global action
 
 def timer(action, uid):
     start = time.time()
     time.clock()    
     elapsed = 0
-    while action != stop:
+    while action == "start":
         elapsed = time.time() - start
         print "loop cycle time: %f, seconds count: %02d" % (time.clock() , elapsed) 
         time.sleep(1)
-    if action == stop:
+    if action == "stop":
         time = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json').read()
         total = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'totalTime.json').read()
 
@@ -59,7 +59,6 @@ def timer(action, uid):
         r = requests.put('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json', data=same)
         r2 = requests.put('https://uvdetection.firebaseio.com/users' + uid + 'totalTime.json', data = same1);
 
-  'https://[PROJECT_ID].firebaseio-demo.com/users/jack/name.json'
 
 @route('/')
 def index():
@@ -130,9 +129,9 @@ def start():
     same = request.args
     userid = same["user"]
     action = same["action"]
-    
+    timer(action, userid)
+    return {"HALLO", "ya"}
 
-stopwatch(20)
     # image = urllib2.urlopen('https://uvdetection.firebaseio.com/base64string.json').read()
 
 
