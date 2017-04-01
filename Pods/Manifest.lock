@@ -1,5 +1,4 @@
 PODS:
-  - APScheduledLocationManager (1.0.0)
   - Firebase/Auth (3.11.1):
     - Firebase/Core
     - FirebaseAuth (= 3.1.0)
@@ -42,13 +41,11 @@ PODS:
   - GTMSessionFetcher/Core (1.1.8)
 
 DEPENDENCIES:
-  - APScheduledLocationManager
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
 
 SPEC CHECKSUMS:
-  APScheduledLocationManager: 6d85e57fbaf251d3447cff38d055d28ea0b2289f
   Firebase: 53b2343db1ebfa3eb16bdb4318b8bb65360b2220
   FirebaseAnalytics: 9c67af0ebeb8d2146c9b4ea2616439affa947b58
   FirebaseAuth: b436e4ecebe068bf8e8c6e4e29de5756ffe7ee24
@@ -60,6 +57,6 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 6f8d8b28b7e345549ac471071608170b31cb4977
 
-PODFILE CHECKSUM: 9a5aa70e71afdc218b0b864265621b0aeeb0b669
+PODFILE CHECKSUM: 7b6acc02f74db082896ba0cb148ecc42ae2716f4
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0

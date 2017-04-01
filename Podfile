@@ -9,7 +9,6 @@ target 'uvradiation' do
 pod 'Firebase/Core'
 pod 'Firebase/Auth'
 pod 'Firebase/Database'
-pod 'APScheduledLocationManager'
   target 'uvradiationTests' do
     inherit! :search_paths
     # Pods for testing

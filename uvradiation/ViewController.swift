@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import CoreMotion
+import Firebase
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -23,6 +24,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     private var longNumb:Int!
     private var sublatNumb:String = ""
     private var sublongNumb:String = ""
+    private var ref:FIRDatabaseReference!
     let session = URLSession(configuration: URLSessionConfiguration.default)
     
     let motionManager = CMMotionManager()
@@ -61,10 +63,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         var locValue:CLLocationCoordinate2D = locationManager.location!.coordinate
         print("locations = \(locValue.latitude) \(locValue.longitude)")
+        print ("got here")
+        ref.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("speed").setValue(locationManager.location!.speed)
+
         sublatNumb = String(Int(locValue.latitude))
         sublongNumb = String(Int(locValue.longitude))
-        print(sublatNumb)
-        print(sublongNumb)
+        
         //        let url = URL(string: String("\(openWeatherMapBaseURL)?APPID=\(openWeatherMapAPIKey)&lat=\(sublatNumb)&lon=\(sublongNumb)"))
         let url = URL(string: String("\(openWeatherMapBaseURL)\(sublatNumb),\(sublongNumb)/2017-03-01Z.json?appid=3b4d5042582e6a05ef5feaa2d9ef4d0d"))
         print(url)
@@ -133,6 +137,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.ref = FIRDatabase.database().reference()
         // time adjustments
         rate = (tempSkinTone - initSkinTone)*0.1 // set rate of same
         if (tempSkinTone < initSkinTone){
@@ -146,6 +151,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
         
+        BackgroundLocationManager.instance.start()
+
         loadData()
         startTimer()
     }

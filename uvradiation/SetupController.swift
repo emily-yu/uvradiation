@@ -15,11 +15,10 @@ import MobileCoreServices
 import CoreTelephony
 import CoreLocation
 import Darwin
-import APScheduledLocationManager
 
 
 
-class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, APScheduledLocationManagerDelegate {
+class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate {
     var ref = FIRDatabase.database().reference()
     @IBOutlet var weightValue: UITextField!
     
@@ -36,6 +35,7 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
 //        print("same")
         picker.dismiss(animated: true, completion: nil)
+        
     }
     
     @IBAction func pickImage(_ sender: Any) {
@@ -91,6 +91,7 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
     
     @IBAction func finish(_ sender: Any) {
         let userID = FIRAuth.auth()!.currentUser!.uid
+        
         self.ref.child("users").child(userID).setValue([
             "weight": self.weightValue.text!,
             "skintone": 0.0 // do shit?
@@ -104,31 +105,7 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
         super.viewDidLoad()
         print ("AORWEFKJOACWEICMEICMEJCJECIOWEDC")
         locationManager.startUpdatingLocation()
-        manager = APScheduledLocationManager(delegate: self)
-        manager.startUpdatingLocation(interval: 60, acceptableLocationAccuracy: 100)
-
-//        imagePicker.delegate = self
     }
     
-    private var manager: APScheduledLocationManager!
-    
-    func scheduledLocationManager(_ manager: APScheduledLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .medium
-        
-        let l = locations.first!
-        print (l)
-    }
-    
-    func scheduledLocationManager(_ manager: APScheduledLocationManager, didFailWithError error: Error) {
-        
-    }
-    
-    func scheduledLocationManager(_ manager: APScheduledLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        
-    }
-
-}
+   }
 

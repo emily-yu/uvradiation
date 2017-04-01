@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A0ACE2D1E902380009124D5 /* BackgroundLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0ACE2C1E902380009124D5 /* BackgroundLocationManager.swift */; };
 		0AE9660D1E8FF00D00AB3B55 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE9660C1E8FF00D00AB3B55 /* QuartzCore.framework */; };
 		4E5569A1DA98EAEFBF3F202A /* Pods_uvradiation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11307B2DBD7F9A3092BADCFB /* Pods_uvradiation.framework */; };
 		66A614992E6CBCF2DB6357AB /* Pods_uvradiation_uvradiationUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF3BABD2B88FB3556B917244 /* Pods_uvradiation_uvradiationUITests.framework */; };
@@ -44,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A0ACE2C1E902380009124D5 /* BackgroundLocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundLocationManager.swift; sourceTree = "<group>"; };
 		0AE9660C1E8FF00D00AB3B55 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0AE9660E1E8FF10E00AB3B55 /* uvradiation-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "uvradiation-Bridging-Header.h"; sourceTree = "<group>"; };
 		110292950BECBA4BA9240F41 /* Pods_uvradiationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_uvradiationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -152,6 +154,7 @@
 				A15F5C231E8F9E6600AA6F6B /* LoginController.swift */,
 				A15F5C271E8FA14200AA6F6B /* SignUpController.swift */,
 				A15F5C291E8FA7FE00AA6F6B /* SetupController.swift */,
+				0A0ACE2C1E902380009124D5 /* BackgroundLocationManager.swift */,
 				A15F5BF91E8F483300AA6F6B /* Main.storyboard */,
 				A15F5BFC1E8F483300AA6F6B /* Assets.xcassets */,
 				A15F5BFE1E8F483300AA6F6B /* LaunchScreen.storyboard */,
@@ -272,7 +275,7 @@
 				TargetAttributes = {
 					A15F5BF11E8F483300AA6F6B = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = HSYD3ZBRT6;
+						DevelopmentTeam = W82EHQ5KSA;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -485,6 +488,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A0ACE2D1E902380009124D5 /* BackgroundLocationManager.swift in Sources */,
 				A15F5BF81E8F483300AA6F6B /* ViewController.swift in Sources */,
 				A15F5C241E8F9E6600AA6F6B /* LoginController.swift in Sources */,
 				A15F5BF61E8F483300AA6F6B /* AppDelegate.swift in Sources */,
@@ -642,7 +646,7 @@
 			baseConfigurationReference = CD7B537CB2EFBC80585628D6 /* Pods-uvradiation.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = HSYD3ZBRT6;
+				DEVELOPMENT_TEAM = W82EHQ5KSA;
 				INFOPLIST_FILE = uvradiation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.eyu.uvradiation;
@@ -658,7 +662,7 @@
 			baseConfigurationReference = 8E83131ED07927A18877CC89 /* Pods-uvradiation.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = HSYD3ZBRT6;
+				DEVELOPMENT_TEAM = W82EHQ5KSA;
 				INFOPLIST_FILE = uvradiation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.eyu.uvradiation;
