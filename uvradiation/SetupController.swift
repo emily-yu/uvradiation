@@ -17,8 +17,20 @@ import CoreLocation
 import Darwin
 
 
+<<<<<<< HEAD
 
 class SetupController: MotionViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+=======
+class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    private lazy var locationManager: CLLocationManager = {
+        let manager = CLLocationManager()
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.delegate = self
+        manager.requestAlwaysAuthorization()
+        return manager
+    }()
+    
+>>>>>>> dc3eb7a10c60df391854368b87f2c6f527118a2a
     
     var ref = FIRDatabase.database().reference()
     @IBOutlet var weightValue: UITextField!
@@ -27,7 +39,7 @@ class SetupController: MotionViewController, UIImagePickerControllerDelegate, UI
 
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        print("same")
+//        print("same")
         picker.dismiss(animated: true, completion: nil)
     }
     
@@ -51,7 +63,7 @@ class SetupController: MotionViewController, UIImagePickerControllerDelegate, UI
         print("haeoijfaociweacmwiejcmaowiecmaowiec")
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage //2
 //        imageView.image = chosenImage
-        print(chosenImage) //image
+//        print(chosenImage)
         imagepickedtbh = chosenImage
         //        print(imagepickedtbh)
         
@@ -80,21 +92,6 @@ class SetupController: MotionViewController, UIImagePickerControllerDelegate, UI
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dismiss(animated: true, completion:nil);
-    }
-    
-    // this shit deado
-    @IBAction func firebasetest(_ sender: Any) { //does nothing basically
-
-        
-        //opens photo library
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
-            var imagePicker = UIImagePickerController()
-            imagePicker.delegate = self
-            imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary;
-            imagePicker.allowsEditing = true
-            self.present(imagePicker, animated: true, completion: nil)
-        }
-        
     }
     
     @IBAction func finish(_ sender: Any) {
@@ -190,7 +187,6 @@ class SetupController: MotionViewController, UIImagePickerControllerDelegate, UI
 }
 
 extension SetupController: CLLocationManagerDelegate {
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let mostRecentLocation = locations.last else {
             return
