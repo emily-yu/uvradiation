@@ -29,10 +29,9 @@ class SignUpController: UIViewController {
                 
                 if error == nil {
                     //login w/ new account
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "Home")
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "setup")
                     self.present(vc!, animated: true, completion: nil)
                     print((user?.uid)!)
-                    
                     
                 }
                 else {

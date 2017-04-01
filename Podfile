@@ -8,6 +8,7 @@ target 'uvradiation' do
   # Pods for uvradiation
 pod 'Firebase/Core'
 pod 'Firebase/Auth'
+pod 'Firebase/Database'
   target 'uvradiationTests' do
     inherit! :search_paths
     # Pods for testing

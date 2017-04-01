@@ -19,6 +19,7 @@
 		A15F5C241E8F9E6600AA6F6B /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15F5C231E8F9E6600AA6F6B /* LoginController.swift */; };
 		A15F5C261E8F9EC000AA6F6B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A15F5C251E8F9EC000AA6F6B /* GoogleService-Info.plist */; };
 		A15F5C281E8FA14200AA6F6B /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15F5C271E8FA14200AA6F6B /* SignUpController.swift */; };
+		A15F5C2A1E8FA7FE00AA6F6B /* SetupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15F5C291E8FA7FE00AA6F6B /* SetupController.swift */; };
 		A57DF9AF57C2F78C88D2DDBE /* Pods_uvradiationUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF5204A6573522C26DE9253 /* Pods_uvradiationUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +62,7 @@
 		A15F5C231E8F9E6600AA6F6B /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		A15F5C251E8F9EC000AA6F6B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A15F5C271E8FA14200AA6F6B /* SignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
+		A15F5C291E8FA7FE00AA6F6B /* SetupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupController.swift; sourceTree = "<group>"; };
 		B2533613B9302BB1289C7C70 /* Pods-uvradiationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-uvradiationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-uvradiationTests/Pods-uvradiationTests.release.xcconfig"; sourceTree = "<group>"; };
 		B27350D4F79ED0CCABEEA091 /* Pods-uvradiationUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-uvradiationUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-uvradiationUITests/Pods-uvradiationUITests.release.xcconfig"; sourceTree = "<group>"; };
 		BEF5204A6573522C26DE9253 /* Pods_uvradiationUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_uvradiationUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,6 +136,7 @@
 				A15F5BF71E8F483300AA6F6B /* ViewController.swift */,
 				A15F5C231E8F9E6600AA6F6B /* LoginController.swift */,
 				A15F5C271E8FA14200AA6F6B /* SignUpController.swift */,
+				A15F5C291E8FA7FE00AA6F6B /* SetupController.swift */,
 				A15F5BF91E8F483300AA6F6B /* Main.storyboard */,
 				A15F5BFC1E8F483300AA6F6B /* Assets.xcassets */,
 				A15F5BFE1E8F483300AA6F6B /* LaunchScreen.storyboard */,
@@ -462,6 +465,7 @@
 				A15F5BF81E8F483300AA6F6B /* ViewController.swift in Sources */,
 				A15F5C241E8F9E6600AA6F6B /* LoginController.swift in Sources */,
 				A15F5BF61E8F483300AA6F6B /* AppDelegate.swift in Sources */,
+				A15F5C2A1E8FA7FE00AA6F6B /* SetupController.swift in Sources */,
 				A15F5C281E8FA14200AA6F6B /* SignUpController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -17,6 +17,38 @@
             endingLineNumber = "15"
             landmarkName = "ViewController"
             landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "uvradiation.ViewController.init (nibName : Swift.Optional&lt;Swift.String&gt;, bundle : Swift.Optional&lt;__ObjC.Bundle&gt;) -&gt; uvradiation.ViewController"
+                  moduleName = "uvradiation"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/emily/Desktop/uvradiation/uvradiation/ViewController.swift"
+                  timestampString = "512733368.203588"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "96">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "uvradiation.ViewController.init (coder : __ObjC.NSCoder) -&gt; Swift.Optional&lt;uvradiation.ViewController&gt;"
+                  moduleName = "uvradiation"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/emily/Desktop/uvradiation/uvradiation/ViewController.swift"
+                  timestampString = "512733368.206567"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "52">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
