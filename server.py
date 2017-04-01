@@ -10,11 +10,11 @@ from io import BytesIO
 import json
 
 sl = [350, 420, 490, 560, 630, 700, 770]
-sn = ["1", "2", "3", "4", "5", "6"]
+sn = ["6", "5", "4", "3", "2", "1"]
 
 def get_main_color(file):
     img = Image.open("image2.jpg")
-    colors = img.getcolors(16384)
+    colors = img.getcolors(65536)
     max_occurence, most_present = 0, 0
     try:
         for c in colors:
@@ -42,10 +42,10 @@ def index():
 
 login = ""
 
-@post('/login')
+@get('/login')
 def login():
     global login
-    image = urllib2.urlopen('https://uvdetection.firebaseio.com/image.json').read()
+    image = urllib2.urlopen('https://uvdetection.firebaseio.com/base64string.json').read()
     image = image[1:-1]
     image = image.replace("\\r\\n", "")
     
@@ -75,7 +75,6 @@ def login():
     top = same["top"]
     width = same["width"]
     height = same["height"]
-    bottom = top - height
 
     img = cv2.imread(image)
 
@@ -89,26 +88,8 @@ def login():
 
     for x in xrange(len(sn)):
         if(total > sl[x] and total < sl[x+1]):
+            print sn[x]
             return sn[x]
-
-
-# print(same())
-
-@post('/loggedin')
-def loggedin():
-    global login
-    print request.forms.get('username') + " is trying to login, it is: " + login + "asd"
-    if(login == request.forms.get('username')):
-        print "got in"
-        login = ""
-        return "true"
-    elif(login == ""):
-        login = ""
-        return "false"
-    else:
-        tmp = login
-        login = ""
-        return tmp
 
 
 @get('/reset')

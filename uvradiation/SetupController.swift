@@ -12,6 +12,7 @@ import Firebase
 import FirebaseDatabase
 import AVFoundation
 import MobileCoreServices
+import 
 
 var imagepickedtbh:UIImage!
 
@@ -102,10 +103,42 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
 
     }
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        imagePicker.delegate = self
     }
 
 }
+
+extension LocationViewController: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let mostRecentLocation = locations.last else {
+            return
+        }
+        
+        var ref = FIRDatabase.database().reference()
+        ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("latitude").setValue(mostRecentLocation.latitude)
+        ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("longitude").setValue(mostRecentLocation.longitude)
+        
+        print(mostRecentLocation.speed)
+        
+        let mph = mostRecentLocation.speed*2.23694
+        if(mph > 3 && mph < 30){
+            ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("speed").child("state").setValue("outside")
+        }
+        else{
+            ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("speed").child("state").setValue("inside")
+        }
+        
+        
+        
+        if UIApplication.shared.applicationState == .active {
+            mapView.showAnnotations(self.locations, animated: true)
+        } else {
+            print("App is backgrounded. New location is %@", mostRecentLocation)
+        }
+    }
+    
+}
+
