@@ -22,13 +22,13 @@ def get_main_color(file):
             if c[0] > max_occurence:
                 (max_occurence, most_present) = c
         return most_present
-    except TypeError:  
+    except TypeError:
         return 3
 
 def getUrl(path):
     files = {
         ('upload', open(path,'rb')),
-    }   
+    }
 
     same = requests.post('http://uploads.im/api', files=files)
 
@@ -40,11 +40,10 @@ global action
 
 def timer(action, uid):
     start = time.time()
-    time.clock()    
+    time.clock()
     elapsed = 0
     while action == "start":
         elapsed = time.time() - start
-        print "loop cycle time: %f, seconds count: %02d" % (time.clock() , elapsed) 
         time.sleep(1)
     if action == "stop":
         time = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json').read()
@@ -60,22 +59,22 @@ def timer(action, uid):
         r2 = requests.put('https://uvdetection.firebaseio.com/users' + uid + 'totalTime.json', data = same1);
 
 
-# @route('/')
-# def index():
-#     return "same"
+@route('/')
+def index():
+    return "same"
 
-# login = ""
+login = ""
 
-# print "hi"
-# @get('/login')
-
+print "hi"
+@get('/login')
+#
 def same():
     global login
     print "got here"
     image = urllib2.urlopen('https://uvdetection.firebaseio.com/base64string.json').read()
     image = image[1:-1]
     image = image.replace("\\r\\n", "")
-    
+
     fh = open("imageToSave.png", "wb")
     fh.write(image.decode('base64'))
     fh.close()
@@ -83,7 +82,7 @@ def same():
 
     image = "imageToSave.png"
     url = getUrl(image)
-    print url
+    print (url)
 
     data = {
         'url': url
@@ -94,10 +93,10 @@ def same():
     }
 
     url = 'https://westus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false'
-    
+
     r = requests.post(url, data=json.dumps(data), headers=headers)
     json1_data = json.loads(r.text)
-    
+
     same = json1_data[0]["faceRectangle"]
     left = same["left"]
     top = same["top"]
@@ -107,21 +106,25 @@ def same():
     img = cv2.imread(image)
     print width
     print height
-    crop_img = img[top:top+height-5, left:left+width-5] 
+    crop_img = img[top:top+height-5, left:left+width-5]
 
     cv2.imwrite("image2.jpg", crop_img)
     same2 = get_main_color("image2.jpg")
 
-    print same2
+    print (same2)
     total = same2[0]+same2[1]+same2[2]
     print "hallo"
     for x in xrange(len(sn)):
         if(total > sl[x] and total < sl[x+1]):
-            print sn[x]
+            print (sn[x])
             return sn[x]
 
-same()
 
+@get('/reset')
+def reseto():
+    global login
+    print ("reset")
+    login = ""
 
 @get('/update')
 def update():

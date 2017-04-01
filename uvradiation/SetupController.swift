@@ -16,7 +16,7 @@ import CoreTelephony
 import CoreLocation
 import Darwin
 
-
+var maxVitaminD = 0.0
 
 class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate {
     var ref = FIRDatabase.database().reference()
@@ -94,11 +94,40 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
         
         self.ref.child("users").child(userID).setValue([
             "weight": self.weightValue.text!,
-            "skintone": 0.0 // do shit?
+            "skintone": 0.0, // do shit
+            "maxDIntake": Double(weightValue.text!)!*27*0.8
         ])
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "Home")
         self.present(vc!, animated: true, completion: nil)
 
+        // skin color stuff
+        let url = URL(string: String("http://28f3ca05.ngrok.io/login"))
+        print(url)
+        
+        // Handle api calls
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        let task = session.dataTask(with: url!, completionHandler: {
+            (data, response, error) in
+            
+            // if no error
+            if error != nil {
+                print(error!.localizedDescription)
+            }
+                // success
+            else {
+                do {
+                    print(data!)
+                    // set that as their pigment color
+                    self.ref.child("users").child(userID).setValue([
+                        "skintone": String(describing: data!)
+                    ]);
+                }
+                catch {
+                    print("error in JSONSerialization")
+                }
+            }
+        })
+        task.resume()
     }
     
     override func viewDidLoad() {
