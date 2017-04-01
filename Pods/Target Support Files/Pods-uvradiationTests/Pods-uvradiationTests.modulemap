@@ -1,0 +1,6 @@
+framework module Pods_uvradiationTests {
+  umbrella header "Pods-uvradiationTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
