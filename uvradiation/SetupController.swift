@@ -12,14 +12,16 @@ import Firebase
 import FirebaseDatabase
 import AVFoundation
 import MobileCoreServices
-import 
+import CoreTelephony
 
-var imagepickedtbh:UIImage!
 
 class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var ref = FIRDatabase.database().reference()
     @IBOutlet var weightValue: UITextField!
+    
+    var imagepickedtbh:UIImage!
+
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         print("same")
@@ -102,9 +104,11 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
         self.present(vc!, animated: true, completion: nil)
 
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        print ("AORWEFKJOACWEICMEICMEJCJECIOWEDC")
+        print (getSignalStrength())
 //        imagePicker.delegate = self
     }
 
@@ -131,6 +135,7 @@ extension LocationViewController: CLLocationManagerDelegate {
             ref.child("users").child(FIRAuth.auth()?.currentUser?.uid!).child("speed").child("state").setValue("inside")
         }
         
+        let signal = getSignalStrength()
         
         
         if UIApplication.shared.applicationState == .active {
@@ -139,6 +144,29 @@ extension LocationViewController: CLLocationManagerDelegate {
             print("App is backgrounded. New location is %@", mostRecentLocation)
         }
     }
+    
+    func getSignalStrength() -> Int {
+        
+        let application = UIApplication.shared
+        let statusBarView = application.value(forKey: "statusBar") as! UIView
+        let foregroundView = statusBarView.value(forKey: "foregroundView") as! UIView
+        let foregroundViewSubviews = foregroundView.subviews
+        
+        var dataNetworkItemView:UIView!
+        
+        for subview in foregroundViewSubviews {
+            if subview.isKind(of: NSClassFromString("UIStatusBarSignalStrengthItemView")!) {
+                dataNetworkItemView = subview
+                break
+            } else {
+                return 0 //NO SERVICE
+            }
+        }
+        
+        return dataNetworkItemView.value(forKey: "signalStrengthBars") as! Int
+        
+    }
+
     
 }
 
