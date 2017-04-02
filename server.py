@@ -10,12 +10,12 @@ from io import BytesIO
 import json
 import time
 
-sl = [350, 420, 490, 560, 630, 700, 770]
+sl = [0, 420, 490, 560, 630, 700, 770]
 sn = ["6", "5", "4", "3", "2", "1"]
 
 def get_main_color(file):
-    img = Image.open("image2.jpg")
-    colors = img.getcolors(65536)
+    img = Image.open(file)
+    colors = img.getcolors(4096)
     max_occurence, most_present = 0, 0
     try:
         for c in colors:
@@ -23,7 +23,7 @@ def get_main_color(file):
                 (max_occurence, most_present) = c
         return most_present
     except TypeError:
-        raise Exception("Too many colors in the image")
+        return [184,184,184]
 
 def getUrl(path):
     files = {
@@ -38,13 +38,26 @@ def getUrl(path):
 
 global action
 
-def timer(action, uid):
+def timer(action, uid, rate, capacity):
     start = time.time()
-    time.clock()    
-    elapsed = 0
+    time.clock()
+    elapsed = 0;
     while action == "start":
         elapsed = time.time() - start
+        elapsed = elapsed * rates;
         time.sleep(1)
+    if elapsed >= elapsed:
+        time = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json').read()
+        total = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'totalTime.json').read()
+
+        newTime = elapsed + time;
+        totalTime = elapsed + total;
+
+        same = newTime
+        same1 = totalTime
+
+        r = requests.put('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json', data=same)
+        r2 = requests.put('https://uvdetection.firebaseio.com/users' + uid + 'totalTime.json', data = same1);
     if action == "stop":
         time = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json').read()
         total = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'totalTime.json').read()
@@ -65,18 +78,35 @@ def index():
 
 login = ""
 
+print "hi"
 @get('/login')
+#
 def login():
     global login
+    print "got here"
     image = urllib2.urlopen('https://uvdetection.firebaseio.com/base64string.json').read()
-    image = image[1:-1]
+    # image = image[1:1]
     image = image.replace("\\r\\n", "")
-    
+
     fh = open("imageToSave.png", "wb")
     fh.write(image.decode('base64'))
     fh.close()
 
+
     image = "imageToSave.png"
+
+    img = Image.open(image)
+    new_width  = 128
+    new_height = 128
+    img = img.rotate(270)
+    img = img.resize((new_width, new_height), Image.ANTIALIAS)
+
+    img.save(image)
+
+    # fh = open("imageToSave.png", "wb")
+    # fh.write(img)
+    # fh.close()
+
     url = getUrl(image)
     print (url)
 
@@ -89,10 +119,10 @@ def login():
     }
 
     url = 'https://westus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false'
-    
+
     r = requests.post(url, data=json.dumps(data), headers=headers)
     json1_data = json.loads(r.text)
-    
+
     same = json1_data[0]["faceRectangle"]
     left = same["left"]
     top = same["top"]
@@ -100,15 +130,16 @@ def login():
     height = same["height"]
 
     img = cv2.imread(image)
-
-    crop_img = img[top:top+height-5, left+15:left+width-5] 
+    print width
+    print height
+    crop_img = img[top:top+height, left:left+width]
 
     cv2.imwrite("image2.jpg", crop_img)
     same2 = get_main_color("image2.jpg")
 
-    print (same2)
     total = same2[0]+same2[1]+same2[2]
 
+    print total
     for x in xrange(len(sn)):
         if(total > sl[x] and total < sl[x+1]):
             print (sn[x])
@@ -121,14 +152,23 @@ def reseto():
     print ("reset")
     login = ""
 
-
 @get('/update')
-def start():
+def update():
     global action
-    same = request.args
+    print "got here"
+    print request
+    print same
     userid = same["user"]
     action = same["action"]
-    timer(action, userid)
+    skin = same["skin"]
+    index = same["index"]
+    weight = same["weight"]
+    capacity = weight*27.0*0.8
+    rate = uvIndex *15
+
+    timer(action, userid, rate, capacity)
+    return {"HALLO", "ya"}
+
     # image = urllib2.urlopen('https://uvdetection.firebaseio.com/base64string.json').read()
 
 
