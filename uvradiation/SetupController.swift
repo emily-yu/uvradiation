@@ -137,38 +137,39 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "Home")
         self.present(vc!, animated: true, completion: nil)
 
-        // skin color stuff
-        let url = URL(string: String("http://41e888fa.ngrok.io/login"))
-        print(url)
-        
-        // Handle api calls
-        let session = URLSession(configuration: URLSessionConfiguration.default)
-        let task = session.dataTask(with: url!, completionHandler: {
-            (data, response, error) in
-                print ("got here ag")
-            // if no error
-            if error != nil {
-                print(error!.localizedDescription)
-            }
-//            print ("hallo")
-                // success
-            else {
-                print ("success")
-                let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
-                print (same) //correc tindex
-                self.ref.child("users").child(userID).child("skintone").setValue(same)
-                
-                do {
-                    print("jkasdfjkaslkSDJFIOAJDFKL")
-                    print(data!)
-                    // set that as their pigment color
-                }
-                catch {
-                    print("error in JSONSerialization")
-                }
-            }
-        })
-        task.resume()
+//        // skin color stuff
+//        let url = URL(string: String("http://41e888fa.ngrok.io/login"))
+//        print(url)
+//        
+//        // Handle api calls
+//        let session = URLSession(configuration: URLSessionConfiguration.default)
+//        let task = session.dataTask(with: url!, completionHandler: {
+//            (data, response, error) in
+//                print ("got here ag")
+//            // if no error
+//            if error != nil {
+//                print(error!.localizedDescription)
+//            }
+////            print ("hallo")
+//                // success
+//            else {
+//                print ("success")
+//                let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
+//                print (same) //correc tindex
+//                
+//                self.ref.child("users").child(userID).child("skintone").setValue(same)
+//                
+//                do {
+//                    print("jkasdfjkaslkSDJFIOAJDFKL")
+//                    print(data!)
+//                    // set that as their pigment color
+//                }
+//                catch {
+//                    print("error in JSONSerialization")
+//                }
+//            }
+//        })
+//        task.resume()
     }
     
     override func viewDidLoad() {

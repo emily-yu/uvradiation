@@ -222,24 +222,57 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 //    
     override func viewDidLoad() {
         super.viewDidLoad()
+                let userID = FIRAuth.auth()!.currentUser!.uid
+                let url = URL(string: String("http://41e888fa.ngrok.io/login"))
+                print(url)
         
-        let userID = FIRAuth.auth()!.currentUser!.uid
+                // Handle api calls
+                let session = URLSession(configuration: URLSessionConfiguration.default)
+                let task = session.dataTask(with: url!, completionHandler: {
+                    (data, response, error) in
+                        print ("got here ag")
+                    // if no error
+                    if error != nil {
+                        print(error!.localizedDescription)
+                    }
+        //            print ("hallo")
+                        // success
+                    else {
+                        print ("success")
+                        let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
+                        print (same) //correc tindex
+                        self.pigmentColorText.text = same
+        
+                        self.ref.child("users").child(userID).child("skintone").setValue(same)
+        
+                        do {
+                            print("jkasdfjkaslkSDJFIOAJDFKL")
+                            print(data!)
+                            // set that as their pigment color
+                        }
+                        catch {
+                            print("error in JSONSerialization")
+                        }
+                    }
+                })
+                task.resume()
+        
         
                 self.ref = FIRDatabase.database().reference()
         // set pigment color
-        self.ref.child("users").child(userID).child("skintone").observeSingleEvent(of: .value, with: { (snapshot) in
-            if let same = snapshot.value! as? Double{ // or whatever shit it is
-                self.pigmentColor = same
-                print(same)
-                self.ref.child("users").child(userID).child("skintone").observeSingleEvent(of: .value, with: { (snapshot) in
-                    if let same2 = snapshot.value! as? Double{
-                        print(same2)
-                        self.pigmentColorText.text = String(same2)
-                    }
-                })
-//                self.pigmentColorText.text = String(self.pigmentColor)
-            }
-        })
+//        self.ref.child("users").child(userID).child("skintone").observeSingleEvent(of: .value, with: { (snapshot) in
+//            if let same = snapshot.value! as? Double{ // or whatever shit it is
+//                self.pigmentColor = same
+//                print(same)
+//                self.ref.child("users").child(userID).child("skintone").observeSingleEvent(of: .value, with: { (snapshot) in
+//                    if let same2 = snapshot.value! as? Double{
+//                        print(same2)
+//                        self.pigmentColorText.text = String(same2)
+//                    }
+//                })
+////                self.pigmentColorText.text = String(self.pigmentColor)
+//            }
+//        })
     
         //set daily vitamin d intake
 
