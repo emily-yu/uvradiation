@@ -68,8 +68,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         print ("got here")
         ref.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("speed").setValue(locationManager.location!.speed)
         print(locationManager.location!.speed)
-        
-        if(locationManager.location!.speed > -2) {
+        var signalSign:Bool = getSignalStrength()
+        if((locationManager.location!.speed > 3 && locationManager.location.speed < 27) || signalSign == true) {
             self.start()
 //            self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
 //                print("got into here")
@@ -326,7 +326,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let task = session.dataTask(with: url!, completionHandler: {
             (data, response, error) in
             print ("got here ag")
-            // if no error
+        
             if error != nil {
                 print(error!.localizedDescription)
             }
@@ -337,10 +337,81 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 let capacity:String = String.init(data: data!, encoding: String.Encoding.utf8)!
                 print (capacity) //correc tindex
             }
+            self.ref.child("users").child(userID!).child("time").observeSingleEvent(of: .value, with: { (snapshot) in
+                if !(snapshot.value != nil){
+                    self.ref.child("users").child(userID!).child("time").setValue(response)
+                }
+                else{
+                    if let time = snapshot.value as? Int{
+                        let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
+                        let dict = self.convertToDictionary(text: same)
+                        print (dict?["response"])
+                        if let temp = dict?["response"] as? Int{
+                            self.ref.child("users").child(userID!).child("time").setValue(temp + time)
+                        }
+                    }
+                }
+
+            })
         })
         task.resume()
     }
-    
+
+    func getSignalStrength() -> Bool{
+        let application = UIApplication.shared
+        let statusBarView = application.value(forKey: "statusBar") as! UIView
+        let foregroundView = statusBarView.value(forKey: "foregroundView") as! UIView
+        let foregroundViewSubviews = foregroundView.subviews
+        
+        var dataNetworkItemView:UIView!
+        
+        for subview in foregroundViewSubviews {
+            if subview.isKind(of: NSClassFromString("UIStatusBarSignalStrengthItemView")!) {
+                dataNetworkItemView = subview
+                break
+            } else {
+                
+            }
+        }
+        var same = 0;
+        let userID = FIRAuth.auth()?.currentUser?.uid
+        let strength =  dataNetworkItemView.value(forKey: "signalStrengthBars") as! Int
+
+        self.ref.child("users").child(userID!).child("signal").observeSingleEvent(of: .value, with: { (snapshot) in
+            if !(snapshot.value != nil){
+                self.ref.child("users").child(userID!).child("signal").setValue(strength)
+            }
+            else{
+                if let int = snapshot.value{
+                    same = int as! Int;
+                }
+            }
+        })
+
+        
+        self.ref.child("users").child(userID!).child("signal").setValue(strength)
+        if(strength > same + 2 || same > strength + 2){
+            return true
+        }
+        else{
+            return false
+        }
+    }
+
+
+
+    func convertToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return nil
+    }
+
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

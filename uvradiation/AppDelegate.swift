@@ -36,28 +36,6 @@ var timer2: Timer!
     func applicationDidEnterBackground(_ application: UIApplication) {
         
     }
-    
-    func getSignalStrength() -> Int {
-        
-        let application = UIApplication.shared
-        let statusBarView = application.value(forKey: "statusBar") as! UIView
-        let foregroundView = statusBarView.value(forKey: "foregroundView") as! UIView
-        let foregroundViewSubviews = foregroundView.subviews
-        
-        var dataNetworkItemView:UIView!
-        
-        for subview in foregroundViewSubviews {
-            if subview.isKind(of: NSClassFromString("UIStatusBarSignalStrengthItemView")!) {
-                dataNetworkItemView = subview
-                break
-            } else {
-                return 0 //NO SERVICE
-            }
-        }
-        
-        return dataNetworkItemView.value(forKey: "signalStrengthBars") as! Int
-    }
-
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.

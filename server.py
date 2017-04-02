@@ -149,6 +149,7 @@ def end():
     time = request.GET.get('date')
 
     amount = stopTimer(userid,index,time)
-    return amount
+    response = {"response": amount}
+    return response
 
 run(host='localhost', port=8000)

@@ -1,7 +1,7 @@
 import urllib2
 import json
 
-url = 'https://isic-archive.com:443/api/v1/image?limit=10000&offset=0&sort=name&sortdir=1'
+url = 'https://isic-archive.com:443/api/v1/image?limit=13000&offset=0&sort=name&sortdir=1'
 
 same = urllib2.urlopen(url).read()
 
@@ -20,7 +20,7 @@ for x in d:
 	if care == "malignant" and count <= 500:
 		url3 = 'https://isic-archive.com:443/api/v1/image/' + x["_id"] + '/download?contentDisposition=inline'
 		same3 = urllib2.urlopen(url3).read()
-		fh = open("data/malignant" + str(count) + ".png", "wb")
+		fh = open("malignant/malignant" + str(count) + ".png", "wb")
 		fh.write(same3)
 		fh.close()
 		print "count ", count
@@ -28,7 +28,7 @@ for x in d:
 	elif(count2 <= 1000 and care == "benign"):
 		url3 = 'https://isic-archive.com:443/api/v1/image/' + x["_id"] + '/download?contentDisposition=inline'
 		same3 = urllib2.urlopen(url3).read()
-		fh = open("data/benign" + str(count2) + ".png", "wb")
+		fh = open("benign/benign" + str(count2) + ".png", "wb")
 		fh.write(same3)
 		fh.close()
 		print "count2 ", count2
