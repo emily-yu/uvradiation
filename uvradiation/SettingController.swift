@@ -27,7 +27,7 @@ class SettingController: UIViewController {
     }
     
     @IBAction func adjustWeight(_ sender: Any) {
-
+        presentAlert()
     }
     
     func presentAlert() {
