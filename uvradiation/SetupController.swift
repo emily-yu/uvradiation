@@ -18,10 +18,25 @@ import Darwin
 
 var maxVitaminD = 0.0
 
+
 class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate {
     var ref = FIRDatabase.database().reference()
     @IBOutlet var weightValue: UITextField!
     
+    // Block 1 to fade in
+    @IBOutlet var text1: UITextView!
+    @IBOutlet var button1: UIButton!
+    
+    
+    @IBAction func confirmButton(_ sender: Any) {
+        self.text1.alpha = 0
+        self.text1.text = "To get a better idea of your skin's personal needs, please upload a portrait of your face."
+        self.text1.fadeIn(completion: {
+            (finished: Bool) -> Void in
+            self.text1.fadeOut()
+        })
+
+    }
     var imagepickedtbh:UIImage!
 
     private lazy var locationManager: CLLocationManager = {
@@ -144,4 +159,21 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
     
    }
+
+
+extension UIView {
+    
+    
+    func fadeIn(duration: TimeInterval = 1.0, delay: TimeInterval = 0.0, completion: @escaping ((Bool) -> Void) = {(finished: Bool) -> Void in}) {
+        UIView.animate(withDuration: duration, delay: delay, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            self.alpha = 1.0
+        }, completion: completion)  }
+    
+    func fadeOut(duration: TimeInterval = 1.0, delay: TimeInterval = 3.0, completion: @escaping (Bool) -> Void = {(finished: Bool) -> Void in}) {
+        UIView.animate(withDuration: duration, delay: delay, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            self.alpha = 0.0
+        }, completion: completion)
+    }
+    
+}
 
