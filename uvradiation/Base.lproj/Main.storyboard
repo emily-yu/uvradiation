@@ -333,7 +333,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GtK-UG-uSV">
-                                <rect key="frame" x="107" y="357" width="171" height="30"/>
+                                <rect key="frame" x="110" y="413" width="171" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.48476722836494446" green="0.65822982788085938" blue="0.89024066925048828" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" title="Select an Image">
@@ -343,22 +343,22 @@
                                     <action selector="pickImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="96Z-P9-CoO"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="To get a better idea of your skin's personal needs, please upload a portrait of your face. " textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="uSj-uU-s1b">
-                                <rect key="frame" x="67" y="237" width="240" height="112"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" text="To get a better idea of your skin's personal needs, please upload a portrait of your face. " textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="uSj-uU-s1b">
+                                <rect key="frame" x="70" y="293" width="240" height="112"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="That's it! We're looking forward to helping you meet your health goals. " textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="h17-Ic-snG">
-                                <rect key="frame" x="72" y="426" width="240" height="88"/>
+                                <rect key="frame" x="75" y="482" width="240" height="88"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xi4-ch-rAu">
-                                <rect key="frame" x="102" y="522" width="171" height="30"/>
+                                <rect key="frame" x="105" y="578" width="171" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.48476722836494446" green="0.65822982788085938" blue="0.89024066925048828" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" title="Finish">
@@ -368,10 +368,23 @@
                                     <action selector="finish:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gAL-id-DPd"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5gP-0q-R6f">
+                                <rect key="frame" x="107" y="228" width="171" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.48476722836494446" green="0.65822982788085938" blue="0.89024066925048828" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <state key="normal" title="Confirm">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="confirmButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4s6-6a-WPc"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.3888716995716095" green="0.59068608283996582" blue="0.85495400428771973" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </view>
                     <connections>
+                        <outlet property="button1" destination="GtK-UG-uSV" id="n3n-Ze-YxT"/>
+                        <outlet property="text1" destination="uSj-uU-s1b" id="Yq5-S4-wdx"/>
                         <outlet property="weightValue" destination="LAT-VH-VB9" id="RHw-QG-lBp"/>
                     </connections>
                 </viewController>
