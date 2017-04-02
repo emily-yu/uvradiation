@@ -26,17 +26,27 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
     // Block 1 to fade in
     @IBOutlet var text1: UITextView!
     @IBOutlet var button1: UIButton!
-    
-    
-    @IBAction func confirmButton(_ sender: Any) {
-        self.text1.alpha = 0
-        self.text1.text = "To get a better idea of your skin's personal needs, please upload a portrait of your face."
-        self.text1.fadeIn(completion: {
-            (finished: Bool) -> Void in
-            self.text1.fadeOut()
-        })
-
+    @IBAction func confirmBlock1(_ sender: Any) {
+        if weightValue.text != "" {
+            self.text1.fadeIn(completion: {
+                (finished: Bool) -> Void in
+            })
+            self.button1.fadeIn(completion: {
+                (finished: Bool) -> Void in
+            })
+            button1.isUserInteractionEnabled = true
+        }
+        else {
+            let alertController = UIAlertController(title: "Error", message: "Please input a weight.", preferredStyle: .alert)
+            
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
+    
+    @IBOutlet var confirmImage: UIButton!
     var imagepickedtbh:UIImage!
 
     private lazy var locationManager: CLLocationManager = {
@@ -61,11 +71,23 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
         self.present(imagePicker, animated: true, completion: nil)
         //        }
         print("hey it's me");
-
+        
+        // make finish button visible + userinteractionenabled
+        self.text2.fadeIn(completion: {
+            (finished: Bool) -> Void in
+        })
+        self.button2.fadeIn(completion: {
+            (finished: Bool) -> Void in
+        })
+        button2.isUserInteractionEnabled = true
     }
     
     //same gets image picked
     var imagePicker: UIImagePickerController!
+    
+    // Elements to Fade Out (2)
+    @IBOutlet var text2: UITextView!
+    @IBOutlet var button2: UIButton!
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         

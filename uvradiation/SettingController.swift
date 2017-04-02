@@ -13,6 +13,9 @@ import FirebaseAuth
 
 class SettingController: UIViewController {
     
+    let userID = FIRAuth.auth()!.currentUser!.uid
+    var ref:FIRDatabaseReference!
+    
     @IBAction func logout(_ sender: Any) {
         do {
             try FIRAuth.auth()?.signOut()
@@ -24,6 +27,30 @@ class SettingController: UIViewController {
     }
     
     @IBAction func adjustWeight(_ sender: Any) {
+
+    }
+    
+    func presentAlert() {
+        let alertController = UIAlertController(title: "Weight Change", message: "Please input your new weight below:", preferredStyle: .alert)
+        
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
+            if let field = alertController.textFields?[0] {
+                self.ref.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("weight").setValue(field.text)
+            } else {
+                print("user dind't fill out field")
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Email"
+        }
+        
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
