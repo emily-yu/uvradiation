@@ -37,40 +37,16 @@ def getUrl(path):
 
 global action
 
-def timer(action, uid, rate, capacity):
-    start = time.time()
-    print start
-    time.clock()
-    elapsed = 0;
-    while action == "start":
-        elapsed = time.time() - start
-        elapsed = elapsed * rates;
-        time.sleep(1)
-    if elapsed >= elapsed:
-        time2 = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json').read()
-        total = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'totalTime.json').read()
+def stopTimer(uid,index):
+    skin = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'skin.json').read()
+    index = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'index.json').read()
+    startTime = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'startTime.json').read()
 
-        newTime = elapsed + time2;
-        totalTime = elapsed + total;
-
-        same = newTime
-        same1 = totalTime
-
-        r = requests.put('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json', data=same)
-        r2 = requests.put('https://uvdetection.firebaseio.com/users' + uid + 'totalTime.json', data = same1);
-    if action == "stop":
-        time3 = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json').read()
-        total = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'totalTime.json').read()
-
-        newTime = elapsed + time3;
-        totalTime = elapsed + total;
-
-        same = newTime
-        same1 = totalTime
-
-        r = requests.put('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json', data=same)
-        r2 = requests.put('https://uvdetection.firebaseio.com/users' + uid + 'totalTime.json', data = same1);
-
+    current = time.time()
+    difference = current - startTime 
+    amount = difference * index/3 * weight
+    return amount;
+   
 
 @route('/')
 def index():
@@ -85,7 +61,6 @@ def login():
     global login
     print "got here"
     image = urllib2.urlopen('https://uvdetection.firebaseio.com/base64string.json').read()
-    # image = image[1:1]
     image = image.replace("\\r\\n", "")
 
     fh = open("imageToSave.png", "wb")
@@ -144,7 +119,7 @@ def login():
         if(total > sl[x] and total < sl[x+1]):
             print (sn[x])
             return sn[x]
-
+    return 4
 
 @get('/reset')
 def reseto():
@@ -154,26 +129,11 @@ def reseto():
 
 @get('/update')
 def update():
-    print "got here"
-    print "hallo"
     userid = request.GET.get('userid')
-    action = request.GET.get('action')
-    skin = request.GET.get('skin')
     index = request.GET.get('index')
-    weight = request.GET.get('weight')
 
-    capacity = int(weight)*27.0*0.8
-    print (index)
-    rate = float(index) *15
-
-    timer(action, userid, rate, capacity)
-    return {"HALLO", "ya"}
-
-    # image = urllib2.urlopen('https://uvdetection.firebaseio.com/base64string.json').read()
-
-
-
-
+    amount = stopTimer(userid,index)
+    return amount
 
 
 run(host='localhost', port=8000)

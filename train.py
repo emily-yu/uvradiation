@@ -8,7 +8,8 @@ import sys
 from bottle import route, run, template, static_file, get, post, request
 import urllib2
 from PIL import Image
-
+from glob import glob
+import os
 
 def weight_variable(shape):
 	initial = tf.truncated_normal(shape, stddev=0.1)
@@ -47,8 +48,8 @@ def save(checkpoint_dir, step):
 
 sess = tf.Session()
 
-x = tf.placeholder(tf.float32, shape=[None, 64, 64, 3])
-y_ = tf.placeholder(tf.float32, shape=[9, 3])
+x = tf.placeholder(tf.float32, shape=[10, 64, 64, 3])
+y_ = tf.placeholder(tf.float32, shape=[10, 2])
 
 W_conv1 = weight_variable([5, 5, 3, 64])
 b_conv1 = bias_variable([64])
@@ -77,8 +78,8 @@ h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
 keep_prob = tf.placeholder(tf.float32)
 h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
 
-W_fc2 = weight_variable([1024, 3])
-b_fc2 = bias_variable([3])
+W_fc2 = weight_variable([1024, 2])
+b_fc2 = bias_variable([2])
 
 y_conv = tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)
 
@@ -90,54 +91,52 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
 
 sess.run(tf.initialize_all_variables())
 
-si = 3;
-sl = ["n","a","m"]
-sn = ["nevus","atypical","melonoma"]
+si = 2;
+sl = ["y","n"]
+sn = ["malignant","benign"]
 
 batch = np.zeros((si*6,1024))
 labels = np.zeros((si*6,si))
 
-batchsize = 9
+dataB = glob(os.path.join("benign", "*.png"))
+
+
+dataM = glob(os.path.join("malignant", "*.png"))
+# baseDog_normalized = base/255.0
+
+batchsize = 10
 
 saver = tf.train.Saver()
 
 if sys.argv[1] == "train":
-
-	dataAtypical = [];
-	dataMelonoma = [];
-	dataNevus = [];
-
-	baseAtypicalPath = "PH2Dataset/atypical/atypical"
-	baseMelonomaPath = "PH2Dataset/melonoma/melonoma"
-	baseNevusPath = "PH2Dataset/nevus/nevus"
-
-	for a in range(1,44):
-		path = baseAtypicalPath + str(a) + "/picture.bmp"
-		dataAtypical.append(path)
-
-		path2 = baseMelonomaPath + str(a) + "/picture.bmp"
-		dataMelonoma.append(path2)
-
-		path3 = baseNevusPath + str(a) + "/picture.bmp"
-		dataNevus.append(path3)
-
-
 	for i in range(20000):
-		batch_files = dataAtypical[i*batchsize/3:(i+1)*batchsize/3]
+		batch_index_start = (i*batchsize/2) % 120 
+		batch_index_end = ((i+1)*batchsize/2) % 120
+
+		if batch_index_end < batch_index_start:
+			batch_files = dataB[batch_index_start:] + dataM[:batch_index_end]
+		else:
+			batch_files = dataB[batch_index_start:batch_index_end]
+
 		batch = np.array([get_image(batch_file) for batch_file in batch_files])
+		print "line129", batch.shape
 
-		batch_files2 = dataMelonoma[i*batchsize/3:(i+1)*batchsize/3]
+		if batch_index_end < batch_index_start:
+			batch_files2 = dataM[batch_index_start:] + dataB[:batch_index_end]
+		else:
+			batch_files2 = dataM[batch_index_start:batch_index_end]
+		# batch_files2 = dataMelonoma[i*batchsize/3:(i+1)*batchsize/3]
 		batch2 = np.array([get_image(batch_file2) for batch_file2 in batch_files2])
+		print "line133", batch2.shape
 
-		batch_files3 = dataNevus[i*batchsize/3:(i+1)*batchsize/3]
-		batch3 = np.array([get_image(batch_file3) for batch_file3 in batch_files3])
-
-		bigArray = np.concatenate((batch, batch2, batch3), axis=0)
+		bigArray = np.concatenate((batch, batch2), axis=0)
+		print "line140", bigArray.shape
+		bigArray = bigArray/225.0
 		
-		labels = np.zeros((batchsize, 3))
-		labels[0:3,0] = 1;
-		labels[3:6,1] = 1;
-		labels[6:9,2] = 1;
+		labels = np.zeros((batchsize, 2))
+		print "line143", labels.shape
+		labels[0:5,0] = 1;
+		labels[5:10,1] = 1;
 
 		train_step.run(session=sess, feed_dict={x: bigArray, y_: labels, keep_prob: 0.5})
 		if i%10 == 0:
@@ -151,74 +150,16 @@ if sys.argv[1] == "train":
 elif sys.argv[1] == "server":
     print "server"
 else:
-    saver.restore(sess, tf.train.latest_checkpoint("/Users/kevin/Documents/Python/facial-detection/"))
-    batch = np.zeros((1,1024))
-    batch[0] = misc.imread(sys.argv[1]).flatten()
-    print y_conv.eval(feed_dict={x: batch, y_: labels, keep_prob: 1.0})
+	saver.restore(sess, tf.train.latest_checkpoint("/Users/kevin/desktop/uvradiation/training/tr/training.ckpt"))
+	batch = np.zeros((1,1024))
+	batch[0] = misc.imread(sys.argv[1]).flatten()
+	pr = y_conv.eval(feed_dict={x: batch, y_: labels, keep_prob: 1.0})
+	value = sl[np.argmax(pr[0])];
+	print sn[np.argmax(pr)];
 
-
-@route('/')
-def index():
-    return "same"
-
-login = ""
-
-@post('/login') # or @route('/login', method='POST')
-def do_login():
-    global login
-
-    saver.restore(sess, tf.train.latest_checkpoint("/Users/kevin/Documents/Python/facial-detection/"))
-    image = urllib2.urlopen('https://signatureauthentication.firebaseio.com/image.json').read()
-    image = image.replace("\\r\\n", "")
-
-    fh = open("imageToSave.png", "wb")
-    fh.write(image.decode('base64'))
-    fh.close()
-
-    img = cv2.imread("imageToSave.png")
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    scaled = cv2.resize(gray,(32,32))
-    cv2.imwrite("imageToSaveSmall.jpg",scaled);
-
-    batch = np.zeros((1,1024))
-    batch[0] = misc.imread("imageToSaveSmall.jpg").flatten()
-    pr = y_conv.eval(feed_dict={x: batch, y_: labels, keep_prob: 1.0})
-    login = sn[np.argmax(pr)];
-    print "login is " + login
-    print sn[np.argmax(pr)];
-    return sn[np.argmax(pr)];
-
-
-
-@post('/loggedin')
-def loggedin():
-    global login
-    print request.forms.get('username') + " is trying to login, it is: " + login + "asd"
-    if(login == request.forms.get('username')):
-        print "got in"
-        login = ""
-        return "true"
-    elif(login == ""):
-        login = ""
-        return "false"
-    else:
-        tmp = login
-        login = ""
-        return tmp
-
-
-@get('/reset')
-def reseto():
-    global login
-    print "reset"
-    login = ""
-
-
-
-run(host='localhost', port=8000)
 
 
   # print i
 
 # print("test accuracy %g"%accuracy.eval(feed_dict={
-#     x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0}))
+    # x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0}))
