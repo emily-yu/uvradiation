@@ -48,6 +48,10 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
     
     @IBOutlet var confirmImage: UIButton!
     var imagepickedtbh:UIImage!
+    
+    let date = Date()
+    let calendar = Calendar.current
+    
 
     private lazy var locationManager: CLLocationManager = {
         let manager = CLLocationManager()
@@ -177,6 +181,11 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
         self.weightValue.delegate = self
         print ("AORWEFKJOACWEICMEICMEJCJECIOWEDC")
         locationManager.startUpdatingLocation()
+        
+        let hour = calendar.component(.hour, from: date)
+        let minutes = calendar.component(.minute, from: date)
+        let seconds = calendar.component(.second, from: date)
+        print("hours = \(hour):\(minutes):\(seconds)")
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

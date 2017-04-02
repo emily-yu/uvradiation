@@ -2,8 +2,12 @@ import cv2
 from scipy import misc
 from matplotlib import pyplot as plt
 import sys
+
 from bottle import route, run, template, static_file, get, post, request
-import urllib2
+
+# import urllib2
+import urllib.request  as urllib2 
+
 import requests
 from PIL import Image
 from io import BytesIO
@@ -39,7 +43,7 @@ global action
 
 def timer(action, uid, rate, capacity):
     start = time.time()
-    print start
+    print (start)
     time.clock()
     elapsed = 0;
     while action == "start":
@@ -78,12 +82,12 @@ def index():
 
 login = ""
 
-print "hi"
+print ("hi")
 @get('/login')
 #
 def login():
     global login
-    print "got here"
+    print ("got here")
     image = urllib2.urlopen('https://uvdetection.firebaseio.com/base64string.json').read()
     # image = image[1:1]
     image = image.replace("\\r\\n", "")
@@ -130,8 +134,8 @@ def login():
     height = same["height"]
 
     img = cv2.imread(image)
-    print width
-    print height
+    print (width)
+    print (height)
     crop_img = img[top:top+height, left:left+width]
 
     cv2.imwrite("image2.jpg", crop_img)
@@ -139,7 +143,7 @@ def login():
 
     total = same2[0]+same2[1]+same2[2]
 
-    print total
+    print (total)
     for x in xrange(len(sn)):
         if(total > sl[x] and total < sl[x+1]):
             print (sn[x])
@@ -154,8 +158,8 @@ def reseto():
 
 @get('/update')
 def update():
-    print "got here"
-    print "hallo"
+    print ("got here")
+    print ("hallo")
     userid = request.GET.get('userid')
     action = request.GET.get('action')
     skin = request.GET.get('skin')
