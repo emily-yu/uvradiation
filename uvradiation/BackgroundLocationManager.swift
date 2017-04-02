@@ -27,7 +27,7 @@ class BackgroundLocationManager :NSObject, CLLocationManagerDelegate {
     private override init(){
         super.init()
         self.ref = FIRDatabase.database().reference()
-
+        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
         locationManager.activityType = .other;
