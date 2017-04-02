@@ -20,7 +20,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     // OpenWeatherAPI
     private let openWeatherMapBaseURL = "http://api.openweathermap.org/v3/uvi/"
-    private let ngrok = "http://41e888fa.ngrok.io"
+    private let ngrok = "http://f4a79985.ngrok.io"
     private let openWeatherMapAPIKey = "3b4d5042582e6a05ef5feaa2d9ef4d0d" // <YOUR API KEY>
     private var latNumb:Int!
     private var longNumb:Int!
@@ -79,7 +79,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 
                         if let skintone = same["skintone"] as? String{
 
-                            let url2 = URL(string: String("http://41e888fa.ngrok.io/update?userid=\(FIRAuth.auth()!.currentUser!.uid)&action=stop&index=\(self.currentUVIndex)&weight=\(weight)&skin=\(skintone)"))
+                            let url2 = URL(string: String("http://f4a79985.ngrok.io/update?userid=\(FIRAuth.auth()!.currentUser!.uid)&action=stop&index=\(self.currentUVIndex)&weight=\(weight)&skin=\(skintone)"))
                             
                             // Handle api calls
                             let task = self.session.dataTask(with: url2!, completionHandler: {
@@ -225,7 +225,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
                 let userID = FIRAuth.auth()!.currentUser!.uid
-                let url = URL(string: String("http://41e888fa.ngrok.io/login"))
+                let url = URL(string: String("http://f4a79985.ngrok.io/login"))
                 print(url)
         
                 // Handle api calls
@@ -310,10 +310,53 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         // ---url: http://41e888fa.ngrok.io/update?userid=\(FIRAuth.auth().currentuser.uid)&action=start&index=\(currentUVIndex)&weight=\(weightFB)
 //        let url = URL(string: String("http://41e888fa.ngrok.io/update?userid=\(FIRAuth.auth().currentuser.uid)&action=start&index=\(currentUVIndex)&weight=\(weightFB)"))
-        
+        // Handle api calls
 
         
-        // ----
+        self.ref.child("users").child(userID).child("weight").observeSingleEvent(of: .value, with: { (snapshot) in
+            if let same = snapshot.value! as? Double{
+//                maxVitaminDIntake = same
+//                print(same)
+
+                var weightFB = String(same)
+                                print(weightFB)
+                let url = URL(string: String("http://f4a79985.ngrok.io/update?userid=\(userID)&action=start&index=\(self.currentUVIndex)&weight=\(weightFB)"))
+                // Handle api calls
+                let session = URLSession(configuration: URLSessionConfiguration.default)
+                let task = session.dataTask(with: url!, completionHandler: {
+                    (data, response, error) in
+                    print ("got here ag")
+                    // if no error
+                    if error != nil {
+                        print(error!.localizedDescription)
+                    }
+                        // print ("hallo")
+                        // success
+                    else {
+                        print ("success")
+                        let capacity:String = String.init(data: data!, encoding: String.Encoding.utf8)!
+                        print (capacity) //correc tindex
+//                        self.pigmentColorText.text = same
+                        
+//                        self.ref.child("users").child(userID).child("skintone").setValue(same)
+//                        
+                        //                        do {
+                        //                            print("jkasdfjkaslkSDJFIOAJDFKL")
+                        //                            print(data!)
+                        //                            // set that as their pigment color
+                        //                        }
+                        //                        catch {
+                        //                            print("error in JSONSerialization")
+                        //                        }
+                    }
+                })
+                task.resume()
+                
+                
+
+            }
+        })
+                // ----
 
         
         loadData()
