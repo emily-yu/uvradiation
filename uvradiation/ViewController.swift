@@ -17,7 +17,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var pigmentColor: Double!
     var progress: Double!
     @IBOutlet var pigmentColorText: UILabel!
-    @IBOutlet var totalIntake: UILabel!
     
     // OpenWeatherAPI
     private let openWeatherMapBaseURL = "http://api.openweathermap.org/v3/uvi/"
@@ -180,17 +179,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         var tempindex = self?.currentUVIndex
         self?.loadData()
             if (tempindex != self?.currentUVIndex){
-//                var change = (self?.currentUVIndex)! - tempindex!
-//                print(change)
+                var change = (self?.currentUVIndex)! - tempindex!
+                print(change)
                 
-                // get skin tone
-                var addedprogress = self?.calculateVitaminD(skintone: (self?.pigmentColor)!, uvIndex: tempindex!, timeElapsed: Double(count))
-                self?.progress = (self?.progress)! + addedprogress!
-                addedprogress = 0 // reset added progress
-                count = 0 // reset count
+
             }
             else {
-                count ++
+          
                 // add one to minute count
             }
         
@@ -211,9 +206,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 //    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.totalIntake.text = String(progress)
         
         let userID = FIRAuth.auth()!.currentUser!.uid
+        
                 self.ref = FIRDatabase.database().reference()
         // set pigment color
         self.ref.child("users").child(userID).child("skintone").observeSingleEvent(of: .value, with: { (snapshot) in
@@ -231,6 +226,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         })
     
         //set daily vitamin d intake
+
         self.ref.child("users").child(userID).child("maxDIntake").observeSingleEvent(of: .value, with: { (snapshot) in
             if let same = snapshot.value! as? Double{
                 maxVitaminDIntake = same
@@ -238,17 +234,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 self.totalDIntake.text = String(maxVitaminDIntake)
             }
         })
-        
-        self.ref.child("users").child(userID).child("maxIntake").observeSingleEvent(of: .value, with: { (snapshot) in
-            if let same = snapshot.value! as? Double{
-                maxVitaminDIntake = same
-                print(same)
-                self.totalIntake.text = String(maxVitaminDIntake)
-            }
-        })
-
-        
-        
         
 //        totalDIntake.text = String(maxVitaminD)
         print("HEY ITS ME")
@@ -270,6 +255,54 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         BackgroundLocationManager.instance.start()
 
+        // weight
+        self.ref.child("users").child(userID).child("weight").observeSingleEvent(of: .value, with: { (snapshot) in
+            if let same = snapshot.value! as? Double{
+                var weightFB = same
+                
+                let url2 = URL(string: String("http://41e888fa.ngrok.io/update?userid=\(userID)&action=start&index=\(self.currentUVIndex)&weight=\(weightFB)"))
+                
+                // Handle api calls
+                let task = self.session.dataTask(with: url2!, completionHandler: {
+                    (data, response, error) in
+                    
+                    // if no error
+                    if error != nil {
+                        print(error!.localizedDescription)
+                    }
+                        // success
+                    else {
+                        print ("success")
+                        print (String(describing:data!))
+                        let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
+                        print (same) //correc tindex
+//                        self.ref.child("users").child(userID).setValue([
+//                            "skintone": same,
+//                            ])
+//                        
+//                        do {
+//                            print("jkasdfjkaslkSDJFIOAJDFKL")
+//                            print(data!)
+//                           
+//                        }
+//                        catch {
+//                            print("error in JSONSerialization")
+//                        }
+                    }
+                })
+                task.resume()
+                
+            }
+        })
+        
+        // ---url: http://41e888fa.ngrok.io/update?userid=\(FIRAuth.auth().currentuser.uid)&action=start&index=\(currentUVIndex)&weight=\(weightFB)
+//        let url = URL(string: String("http://41e888fa.ngrok.io/update?userid=\(FIRAuth.auth().currentuser.uid)&action=start&index=\(currentUVIndex)&weight=\(weightFB)"))
+        
+
+        
+        // ----
+
+        
         loadData()
         startTimer()
     }
