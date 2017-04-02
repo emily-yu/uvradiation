@@ -95,6 +95,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                                     print (String(describing:data!))
                                     let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
                                     print (same) //correc tindex
+//                                    self.pigmentColorText.text = same
                                 }
                             })
                             task.resume()
@@ -125,9 +126,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                                     print (String(describing:data!))
                                     let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
                                     print (same) //correc tindex
+//                                    self.pigmentColorText.text = same
                                 }
                             })
-                            task.resume()
+                            task.resume() // didn't use server since idk why but it took way longer to load and that's gonna be messy
                         }
                     }
                 }
@@ -245,14 +247,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
                         self.ref.child("users").child(userID).child("skintone").setValue(same)
         
-                        do {
-                            print("jkasdfjkaslkSDJFIOAJDFKL")
-                            print(data!)
-                            // set that as their pigment color
-                        }
-                        catch {
-                            print("error in JSONSerialization")
-                        }
+//                        do {
+//                            print("jkasdfjkaslkSDJFIOAJDFKL")
+//                            print(data!)
+//                            // set that as their pigment color
+//                        }
+//                        catch {
+//                            print("error in JSONSerialization")
+//                        }
                     }
                 })
                 task.resume()
