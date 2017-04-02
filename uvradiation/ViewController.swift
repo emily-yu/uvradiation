@@ -15,11 +15,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBOutlet var totalDIntake: UILabel!
     var pigmentColor: Double!
+    var progress: Double!
     @IBOutlet var pigmentColorText: UILabel!
+    @IBOutlet var totalIntake: UILabel!
     
     // OpenWeatherAPI
     private let openWeatherMapBaseURL = "http://api.openweathermap.org/v3/uvi/"
-    private let ngrok = "http://c3ac4ba2.ngrok.io/"
+    private let ngrok = "http://41e888fa.ngrok.io"
     private let openWeatherMapAPIKey = "3b4d5042582e6a05ef5feaa2d9ef4d0d" // <YOUR API KEY>
     private var latNumb:Int!
     private var longNumb:Int!
@@ -69,7 +71,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         
         if(locationManager.location!.speed > 3 && locationManager.location!.speed < 30) {
-            let url = URL(string: String("http://28f3ca05.ngrok.io/update?user=\(FIRAuth.auth()?.currentUser?.uid)&action=start"))
+            let url = URL(string: String("http://41e888fa.ngrok.io/update?user=\(FIRAuth.auth()?.currentUser?.uid)&action=start"))
             print(url)
             
             // Handle api calls
@@ -153,30 +155,52 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         task.resume()
     }
 
+    // calculate vitamin d shit: index 1 needs 20 min sunlight
+    func calculateVitaminD(skintone: Double, uvIndex: Double, timeElapsed: Double) -> Double {
+        var new = skintone*27.0*0.8
+        var rate = 1/uvIndex
+        var elapsed = rate*timeElapsed
+        return elapsed
+    }
     
     var timer2: Timer?
     var currentUVIndex = 0.0
-    var initSkinTone = 1.0 // for pale people
+//    var initSkinTone = 1.0 // for pale people
     var tempSkinTone = 3.0 // lower is lighter (1 lightest, 6 darkest)
+    
+    
     var rate = 0.0
     var necessaryTime = 20.0 //min
     
+    // degree to which you were fried
     func startTimer() {
-        timer2 = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] _ in
-            print("same")
+        timer2 = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { [weak self] _ in
+//            print("same")
+        var count = 0
         var tempindex = self?.currentUVIndex
         self?.loadData()
             if (tempindex != self?.currentUVIndex){
-                var change = (self?.currentUVIndex)! - tempindex!
-                print(change)
+//                var change = (self?.currentUVIndex)! - tempindex!
+//                print(change)
+                
+                // get skin tone
+                var addedprogress = self?.calculateVitaminD(skintone: (self?.pigmentColor)!, uvIndex: tempindex!, timeElapsed: Double(count))
+                self?.progress = (self?.progress)! + addedprogress!
+                addedprogress = 0 // reset added progress
+                count = 0 // reset count
             }
-            
-        }
+            else {
+                count ++
+                // add one to minute count
+            }
+        
+    }
     }
     
     func stopTimer() {
         timer?.invalidate()
     }
+    
     
     // if appropriate, make sure to stop your timer in `deinit`
 //    
@@ -187,6 +211,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 //    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.totalIntake.text = String(progress)
         
         let userID = FIRAuth.auth()!.currentUser!.uid
                 self.ref = FIRDatabase.database().reference()
@@ -195,12 +220,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             if let same = snapshot.value! as? Double{ // or whatever shit it is
                 self.pigmentColor = same
                 print(same)
-                self.pigmentColorText.text = String(self.pigmentColor)
+                self.ref.child("users").child(userID).child("skintone").observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let same2 = snapshot.value! as? Double{
+                        print(same2)
+                        self.pigmentColorText.text = String(same2)
+                    }
+                })
+//                self.pigmentColorText.text = String(self.pigmentColor)
             }
         })
     
         //set daily vitamin d intake
-
         self.ref.child("users").child(userID).child("maxDIntake").observeSingleEvent(of: .value, with: { (snapshot) in
             if let same = snapshot.value! as? Double{
                 maxVitaminDIntake = same
@@ -209,15 +239,26 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }
         })
         
+        self.ref.child("users").child(userID).child("maxIntake").observeSingleEvent(of: .value, with: { (snapshot) in
+            if let same = snapshot.value! as? Double{
+                maxVitaminDIntake = same
+                print(same)
+                self.totalIntake.text = String(maxVitaminDIntake)
+            }
+        })
+
+        
+        
+        
 //        totalDIntake.text = String(maxVitaminD)
         print("HEY ITS ME")
         print(maxVitaminD)
         
         self.ref = FIRDatabase.database().reference()
         // time adjustments
-        rate = (tempSkinTone - initSkinTone)*0.1 // set rate of same
-        if (tempSkinTone < initSkinTone){
-            necessaryTime += (initSkinTone - tempSkinTone)*10.0 // update time for skin color
+        rate = (tempSkinTone - tempSkinTone)*0.1 // set rate of same
+        if (tempSkinTone < tempSkinTone){
+            necessaryTime += (tempSkinTone - tempSkinTone)*10.0 // update time for skin color
         }
         
         motionManager.startAccelerometerUpdates()

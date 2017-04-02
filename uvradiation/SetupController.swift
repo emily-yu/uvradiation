@@ -42,7 +42,7 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
         var imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = UIImagePickerControllerSourceType.camera;
-        imagePicker.allowsEditing = false
+        imagePicker.allowsEditing = true
         self.present(imagePicker, animated: true, completion: nil)
         //        }
         print("hey it's me");
@@ -101,26 +101,33 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
         self.present(vc!, animated: true, completion: nil)
 
         // skin color stuff
-        let url = URL(string: String("http://28f3ca05.ngrok.io/login"))
+        let url = URL(string: String("http://41e888fa.ngrok.io/login"))
         print(url)
         
         // Handle api calls
         let session = URLSession(configuration: URLSessionConfiguration.default)
         let task = session.dataTask(with: url!, completionHandler: {
             (data, response, error) in
-            
+                print ("got here ag")
             // if no error
             if error != nil {
                 print(error!.localizedDescription)
             }
+//            print ("hallo")
                 // success
             else {
+                print ("success")
+                print (String(describing:data!))
+                let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
+                print (same) //correc tindex
+                self.ref.child("users").child(userID).setValue([
+                    "skintone": same,
+                ])
+                
                 do {
+                    print("jkasdfjkaslkSDJFIOAJDFKL")
                     print(data!)
                     // set that as their pigment color
-                    self.ref.child("users").child(userID).setValue([
-                        "skintone": String(describing: data!)
-                    ]);
                 }
                 catch {
                     print("error in JSONSerialization")

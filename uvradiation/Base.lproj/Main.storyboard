@@ -169,6 +169,7 @@
                     <connections>
                         <outlet property="pigmentColorText" destination="oFA-fF-yR3" id="43F-dl-1Al"/>
                         <outlet property="totalDIntake" destination="ZjQ-bG-lub" id="Fur-QW-bjh"/>
+                        <outlet property="totalIntake" destination="LJd-kB-0QM" id="Vug-UG-W11"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bnk-kC-gxK" userLabel="First Responder" sceneMemberID="firstResponder"/>
