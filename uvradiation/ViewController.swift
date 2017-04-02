@@ -326,7 +326,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let task = session.dataTask(with: url!, completionHandler: {
             (data, response, error) in
             print ("got here ag")
-            // if no error
+        
             if error != nil {
                 print(error!.localizedDescription)
             }
@@ -337,10 +337,39 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 let capacity:String = String.init(data: data!, encoding: String.Encoding.utf8)!
                 print (capacity) //correc tindex
             }
+            self.ref.child("users").child(userID!).child("time").observeSingleEvent(of: .value, with: { (snapshot) in
+                if !snapshot.value{
+                    self.ref.child("users").child(userID!).child("time").setValue(response)
+                }
+                else{
+                    if let time = snapshot.value as? Int{
+                        let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
+                        let dict = self.convertToDictionary(text: same)
+                        print (dict?["response"])
+                        if let temp = dict?["response"] as? Int{
+                            self.ref.child("users").child(userID!).child("time").setValue(temp + time)
+                        }
+                    }
+                }
+
         })
         task.resume()
     }
-    
+
+
+
+    func convertToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return nil
+    }
+
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
