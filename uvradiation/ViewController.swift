@@ -20,7 +20,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     // OpenWeatherAPI
     private let openWeatherMapBaseURL = "http://api.openweathermap.org/v3/uvi/"
-    private let ngrok = "http://f4a79985.ngrok.io"
+    private let ngrok = "http://41e888fa.ngrok.io"
     private let openWeatherMapAPIKey = "3b4d5042582e6a05ef5feaa2d9ef4d0d" // <YOUR API KEY>
     private var latNumb:Int!
     private var longNumb:Int!
@@ -68,72 +68,79 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         print ("got here")
         ref.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("speed").setValue(locationManager.location!.speed)
         print(locationManager.location!.speed)
-        if(locationManager.location!.speed > -100) {
-            self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-                print("got into here")
-                print (FIRAuth.auth()!.currentUser!.uid)
-                if let same = snapshot.value as? [String:AnyObject]{
-                    print("got into here")
-                    print(same)
-                    if let weight = same["weight"] as? String{
-
-                        if let skintone = same["skintone"] as? String{
-
-                            let url2 = URL(string: String("http://f4a79985.ngrok.io/update?userid=\(FIRAuth.auth()!.currentUser!.uid)&action=stop&index=\(self.currentUVIndex)&weight=\(weight)&skin=\(skintone)"))
-                            
-                            // Handle api calls
-                            let task = self.session.dataTask(with: url2!, completionHandler: {
-                                (data, response, error) in
-                                
-                                // if no error
-                                if error != nil {
-                                    print(error!.localizedDescription)
-                                }
-                                    // success
-                                else {
-                                    print ("success")
-                                    print (String(describing:data!))
-                                    let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
-                                    print (same) //correc tindex
-//                                    self.pigmentColorText.text = same
-                                }
-                            })
-                            task.resume()
-                            
-                        }
-                    }
-                }
-            })
+        
+        if(locationManager.location!.speed > -2) {
+            self.start()
+//            self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+//                print("got into here")
+//                print (FIRAuth.auth()!.currentUser!.uid)
+//                if let same = snapshot.value as? [String:AnyObject]{
+//                    print("got into here")
+//                    print(same)
+//                    if let weight = same["weight"] as? String{
+//
+//                        if let skintone = same["skintone"] as? String{
+//
+//                            let url2 = URL(string: String("http://41e888fa.ngrok.io/update?userid=\(FIRAuth.auth()!.currentUser!.uid)&action=stop&index=\(self.currentUVIndex)&weight=\(weight)&skin=\(skintone)"))
+//                            print ("package")
+//                            print (FIRAuth.auth()!.currentUser!.uid)
+//                            print (weight)
+//                            print (skintone)
+//                            // Handle api calls
+//                            let task = self.session.dataTask(with: url2!, completionHandler: {
+//                                (data, response, error) in
+//                                
+//                                // if no error
+//                                if error != nil {
+//                                    print(error!.localizedDescription)
+//                                }
+//                                    // success
+//                                else {
+//                                    print ("success")
+//                                    print (String(describing:data!))
+//                                    let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
+//                                    print (same) //correc tindex
+////                                    self.pigmentColorText.text = same
+//                                }
+//                            })
+//                            task.resume()
+//                            
+//                        }
+//                    }
+//                }
+//            })
         }
         else{
-            self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-                if let same = snapshot.value as? [String:AnyObject]{
-                    if let weight = same["weight"]{
-                        if let skintone = same["skintone"]{
-                            let url2 = URL(string: String("http://41e888fa.ngrok.io/update?userid=\(FIRAuth.auth()!.currentUser!.uid)&action=start&index=\(self.currentUVIndex)&weight=\(weight)&skin=\(skintone)"))
-                            
-                            // Handle api calls
-                            let task = self.session.dataTask(with: url2!, completionHandler: {
-                                (data, response, error) in
-                                
-                                // if no error
-                                if error != nil {
-                                    print(error!.localizedDescription)
-                                }
-                                    // success
-                                else {
-                                    print ("success")
-                                    print (String(describing:data!))
-                                    let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
-                                    print (same) //correc tindex
-//                                    self.pigmentColorText.text = same
-                                }
-                            })
-                            task.resume() // didn't use server since idk why but it took way longer to load and that's gonna be messy
-                        }
-                    }
-                }
-            })
+            
+//            self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+//                if let same = snapshot.value as? [String:AnyObject]{
+//                    if let weight = same["weight"]{
+//                        if let skintone = same["skintone"]{
+//                            let url2 = URL(string: String("http://41e888fa.ngrok.io/update?userid=\(FIRAuth.auth()!.currentUser!.uid)&action=start&index=\(self.currentUVIndex)&weight=\(weight)&skin=\(skintone)"))
+//                            
+//                            // Handle api calls
+//                            let task = self.session.dataTask(with: url2!, completionHandler: {
+//                                (data, response, error) in
+//                                
+//                                // if no error
+//                                if error != nil {
+//                                    print(error!.localizedDescription)
+//                                }
+//                                    // success
+//                                else {
+//                                    print ("success")
+//                                    print (String(describing:data!))
+//                                    let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
+//                                    print (same) //correc tindex
+////                                    self.pigmentColorText.text = same
+//                                }
+//                            })
+//                            task.resume() // didn't use server since idk why but it took way longer to load and that's gonna be messy
+//                        }
+//                    }
+//                }
+//            })
+            self.end()
         }
         
         sublatNumb = String(Int(locValue.latitude))
@@ -172,6 +179,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         task.resume()
     }
 
+    
     // calculate vitamin d shit: index 1 needs 20 min sunlight
     func calculateVitaminD(skintone: Double, uvIndex: Double, timeElapsed: Double) -> Double {
         var new = skintone*27.0*0.8
@@ -224,61 +232,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 //    
     override func viewDidLoad() {
         super.viewDidLoad()
-                let userID = FIRAuth.auth()!.currentUser!.uid
-                let url = URL(string: String("http://f4a79985.ngrok.io/login"))
-                print(url)
-        
-                // Handle api calls
-                let session = URLSession(configuration: URLSessionConfiguration.default)
-                let task = session.dataTask(with: url!, completionHandler: {
-                    (data, response, error) in
-                        print ("got here ag")
-                    // if no error
-                    if error != nil {
-                        print(error!.localizedDescription)
-                    }
-        //            print ("hallo")
-                        // success
-                    else {
-                        print ("success")
-                        let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
-                        print (same) //correc tindex
-                        self.pigmentColorText.text = same
-        
-                        self.ref.child("users").child(userID).child("skintone").setValue(same)
-        
-//                        do {
-//                            print("jkasdfjkaslkSDJFIOAJDFKL")
-//                            print(data!)
-//                            // set that as their pigment color
-//                        }
-//                        catch {
-//                            print("error in JSONSerialization")
-//                        }
-                    }
-                })
-                task.resume()
-        
-        
-                self.ref = FIRDatabase.database().reference()
+        let userID = FIRAuth.auth()?.currentUser?.uid
+        self.ref = FIRDatabase.database().reference()
         // set pigment color
-//        self.ref.child("users").child(userID).child("skintone").observeSingleEvent(of: .value, with: { (snapshot) in
-//            if let same = snapshot.value! as? Double{ // or whatever shit it is
-//                self.pigmentColor = same
-//                print(same)
-//                self.ref.child("users").child(userID).child("skintone").observeSingleEvent(of: .value, with: { (snapshot) in
-//                    if let same2 = snapshot.value! as? Double{
-//                        print(same2)
-//                        self.pigmentColorText.text = String(same2)
-//                    }
-//                })
-////                self.pigmentColorText.text = String(self.pigmentColor)
-//            }
-//        })
+        self.ref.child("users").child(userID!).child("skintone").observeSingleEvent(of: .value, with: { (snapshot) in
+            if let same = snapshot.value as? Double{
+                self.pigmentColor = same
+            }
+            self.pigmentColorText.text = "\(snapshot.value!)"
+        })
     
         //set daily vitamin d intake
 
-        self.ref.child("users").child(userID).child("maxDIntake").observeSingleEvent(of: .value, with: { (snapshot) in
+        self.ref.child("users").child(userID!).child("maxDIntake").observeSingleEvent(of: .value, with: { (snapshot) in
             if let same = snapshot.value! as? Double{
                 maxVitaminDIntake = same
                 print(same)
@@ -304,8 +270,26 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
         
+        self.start()
+        self.end()
+        
         BackgroundLocationManager.instance.start()
 
+
+        
+//        self.ref.child("users").child(userID!).child("weight").observeSingleEvent(of: .value, with: { (snapshot) in
+//            if let same = snapshot.value! as? Double{
+//                print("got into here")
+//                
+//                //                var weightFB = String(same)
+//                //                                print(weightFB)
+//                
+//                
+//                
+//            }
+//        })
+
+        
         // weight
         
         // ---url: http://41e888fa.ngrok.io/update?userid=\(FIRAuth.auth().currentuser.uid)&action=start&index=\(currentUVIndex)&weight=\(weightFB)
@@ -313,56 +297,49 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         // Handle api calls
 
         
-        self.ref.child("users").child(userID).child("weight").observeSingleEvent(of: .value, with: { (snapshot) in
-            if let same = snapshot.value! as? Double{
-//                maxVitaminDIntake = same
-//                print(same)
-
-                var weightFB = String(same)
-                                print(weightFB)
-                let url = URL(string: String("http://f4a79985.ngrok.io/update?userid=\(userID)&action=start&index=\(self.currentUVIndex)&weight=\(weightFB)"))
-                // Handle api calls
-                let session = URLSession(configuration: URLSessionConfiguration.default)
-                let task = session.dataTask(with: url!, completionHandler: {
-                    (data, response, error) in
-                    print ("got here ag")
-                    // if no error
-                    if error != nil {
-                        print(error!.localizedDescription)
-                    }
-                        // print ("hallo")
-                        // success
-                    else {
-                        print ("success")
-                        let capacity:String = String.init(data: data!, encoding: String.Encoding.utf8)!
-                        print (capacity) //correc tindex
-//                        self.pigmentColorText.text = same
-                        
-//                        self.ref.child("users").child(userID).child("skintone").setValue(same)
-//                        
-                        //                        do {
-                        //                            print("jkasdfjkaslkSDJFIOAJDFKL")
-                        //                            print(data!)
-                        //                            // set that as their pigment color
-                        //                        }
-                        //                        catch {
-                        //                            print("error in JSONSerialization")
-                        //                        }
-                    }
-                })
-                task.resume()
-                
-                
-
-            }
-        })
-                // ----
 
         
         loadData()
         startTimer()
     }
     
+    func start(){
+        let date = NSDate().timeIntervalSince1970
+        let userID = FIRAuth.auth()?.currentUser?.uid
+        print("got into start")
+
+        self.ref.child("users").child(userID!).child("startTime").setValue(date)
+    }
+    
+    func end(){
+        print("got into end")
+
+        let date = NSDate().timeIntervalSince1970
+        let userID = FIRAuth.auth()?.currentUser?.uid
+
+        let url = URL(string: String("http://41e888fa.ngrok.io/end?userid=\(userID!)&index=\(self.currentUVIndex)&date=\(date)"))
+        print(date)
+        print(currentUVIndex)
+        print(userID!)
+        
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        let task = session.dataTask(with: url!, completionHandler: {
+            (data, response, error) in
+            print ("got here ag")
+            // if no error
+            if error != nil {
+                print(error!.localizedDescription)
+            }
+            else {
+                print ("success")
+                self.ref.child("users").child(userID!).child("startTime").setValue("")
+                print ("awecdiojwaemoacwedc")
+                let capacity:String = String.init(data: data!, encoding: String.Encoding.utf8)!
+                print (capacity) //correc tindex
+            }
+        })
+        task.resume()
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

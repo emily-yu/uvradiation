@@ -5,13 +5,13 @@ import sys
 
 from bottle import route, run, template, static_file, get, post, request
 
-# import urllib2
-import urllib.request  as urllib2 
-
+import urllib2
+# import urllib.request  as urllib2 
+import json
 import requests
 from PIL import Image
 from io import BytesIO
-import json
+import datetime
 import time
 
 sl = [0, 420, 490, 560, 630, 700, 770]
@@ -30,26 +30,28 @@ def get_main_color(file):
         return [184,184,184]
 
 def getUrl(path):
-    files = {
-        ('upload', open(path,'rb')),
-    }
-
-    same = requests.post('http://uploads.im/api', files=files)
-    data = same.text
-    json1_data = json.loads(data)
-    return json1_data["data"]["img_url"]
+    files = {         
+        ('upload', open(path,'rb')), 
+    }           
+    same = requests.post('http://uploads.im/api', files=files) 
+    data = same.text 
+    json1_data = json.loads(data) 
+    return json1_data["data"]["img_url"]       
 
 global action
 
 
-def stopTimer(uid,index):
+def stopTimer(uid,index, tim):
     skin = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'skin.json').read()
-    index = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'index.json').read()
+    weight = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'weight.json').read()
     startTime = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'startTime.json').read()
 
-    current = time.time()
-    difference = current - startTime 
-    amount = difference * index/3 * weight
+
+    epoch_time = float(time.time())
+    print epoch_time
+    difference = epoch_time - float(tim)
+    minutes = int(difference)/60
+    amount = minutes * int(index/3) * int(weight)
     return amount;
    
 
@@ -65,7 +67,10 @@ print ("hi")
 def login():
     global login
     print ("got here")
-    image = urllib2.urlopen('https://uvdetection.firebaseio.com/base64string.json').read()
+    userid = request.GET.get('userid')
+    print userid
+
+    image = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + userid + '/base64.json').read()
     image = image.replace("\\r\\n", "")
 
     fh = open("imageToSave.png", "wb")
@@ -103,6 +108,8 @@ def login():
     r = requests.post(url, data=json.dumps(data), headers=headers)
     json1_data = json.loads(r.text)
 
+    print r.text
+    print json1_data
     same = json1_data[0]["faceRectangle"]
     left = same["left"]
     top = same["top"]
@@ -123,8 +130,11 @@ def login():
     for x in xrange(len(sn)):
         if(total > sl[x] and total < sl[x+1]):
             print (sn[x])
-            return sn[x]
-    return 4
+            response = {"response": sn[x]}
+            return response
+    response = {"response": 4}
+    return response
+
 
 @get('/reset')
 def reseto():
@@ -132,13 +142,13 @@ def reseto():
     print ("reset")
     login = ""
 
-@get('/update')
-def update():
+@get('/end')
+def end():
     userid = request.GET.get('userid')
     index = request.GET.get('index')
+    time = request.GET.get('date')
 
-    amount = stopTimer(userid,index)
+    amount = stopTimer(userid,index,time)
     return amount
-
 
 run(host='localhost', port=8000)

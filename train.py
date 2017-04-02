@@ -132,7 +132,7 @@ if sys.argv[1] == "train":
 		bigArray = np.concatenate((batch, batch2), axis=0)
 		print "line140", bigArray.shape
 		bigArray = bigArray/225.0
-		
+
 		labels = np.zeros((batchsize, 2))
 		print "line143", labels.shape
 		labels[0:5,0] = 1;
@@ -140,7 +140,7 @@ if sys.argv[1] == "train":
 
 		train_step.run(session=sess, feed_dict={x: bigArray, y_: labels, keep_prob: 0.5})
 		if i%10 == 0:
-			train_accuracy = accuracy.eval(session=sess,feed_dict={x:bigArray, y_: labels, keep_prob: 1.0})
+			train_accuracy = accuracy.eval(session=sess,feed_dict={x:bigArray, y_: labels, keep_prob: 0.5})
 			print "step %d, training accuracy %g"%(i, train_accuracy)
 
 		if i%50 == 0:

@@ -22,7 +22,8 @@ var maxVitaminD = 0.0
 class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, UITextFieldDelegate {
     var ref = FIRDatabase.database().reference()
     @IBOutlet var weightValue: UITextField!
-    
+    let userID = FIRAuth.auth()!.currentUser!.uid
+
     // Block 1 to fade in
     @IBOutlet var text1: UITextView!
     @IBOutlet var button1: UIButton!
@@ -35,6 +36,7 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
                 (finished: Bool) -> Void in
             })
             button1.isUserInteractionEnabled = true
+            self.view.endEditing(true)
         }
         else {
             let alertController = UIAlertController(title: "Error", message: "Please input a weight.", preferredStyle: .alert)
@@ -110,17 +112,20 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
         
         let base64String = (imageData as NSData).base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
         
-        var postRef = ref.child("base64string")
-        ref.updateChildValues(["base64string": base64String])
-                postRef.observe(FIRDataEventType.value, with: { (snapshot) in //this gets the value at current pt
-                    let postDict = snapshot.value as? [String : AnyObject] ?? [:]
-                    if let unwrapped = snapshot.value {
-        //                print(unwrapped)
-                        self.ref.updateChildValues(["base64string": unwrapped]) //this shit updates the thing
+
+        self.ref.child("users").child(userID).child("base64").setValue(base64String)
         
-                    }
-        })
-        
+//        var postRef = ref.child("base64string")
+//        ref.updateChildValues(["base64string": base64String])
+//                postRef.observe(FIRDataEventType.value, with: { (snapshot) in //this gets the value at current pt
+//                    let postDict = snapshot.value as? [String : AnyObject] ?? [:]
+//                    if let unwrapped = snapshot.value {
+//        //                print(unwrapped)
+//                        self.ref.updateChildValues(["base64string": unwrapped]) //this shit updates the thing
+//        
+//                    }
+//        })
+//        
         dismiss(animated: true, completion: nil)
     }
     
@@ -133,47 +138,57 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
     @IBAction func finish(_ sender: Any) {
         let userID = FIRAuth.auth()!.currentUser!.uid
         
-        self.ref.child("users").child(userID).setValue([
-            "weight": self.weightValue.text!,
-            "skintone": 0.0, // do shit
-            "maxDIntake": Double(weightValue.text!)!*27*0.8
-        ])
+        
+        self.ref.child("users").child(userID).child("weight").setValue(self.weightValue.text!)
+        self.ref.child("users").child(userID).child("skintone").setValue(0.0)
+        self.ref.child("users").child(userID).child("maxDIntake").setValue(Double(weightValue.text!)!*27*0.8)
+        
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "Home")
         self.present(vc!, animated: true, completion: nil)
-
-//        // skin color stuff
-//        let url = URL(string: String("http://41e888fa.ngrok.io/login"))
-//        print(url)
-//        
-//        // Handle api calls
-//        let session = URLSession(configuration: URLSessionConfiguration.default)
-//        let task = session.dataTask(with: url!, completionHandler: {
-//            (data, response, error) in
-//                print ("got here ag")
-//            // if no error
-//            if error != nil {
-//                print(error!.localizedDescription)
-//            }
-////            print ("hallo")
-//                // success
-//            else {
-//                print ("success")
-//                let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
-//                print (same) //correc tindex
-//                
-//                self.ref.child("users").child(userID).child("skintone").setValue(same)
-//                
-//                do {
-//                    print("jkasdfjkaslkSDJFIOAJDFKL")
-//                    print(data!)
-//                    // set that as their pigment color
-//                }
-//                catch {
-//                    print("error in JSONSerialization")
-//                }
-//            }
-//        })
-//        task.resume()
+        // skin color stuff
+        let url = URL(string: String("http://41e888fa.ngrok.io/login?userid=\(userID)"))
+        print(url)
+        
+        // Handle api calls
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        let task = session.dataTask(with: url!, completionHandler: {
+            (data, response, error) in
+                print ("got here ag")
+            // if no error
+            if error != nil {
+                print(error!.localizedDescription)
+            }
+                
+            else {
+                print ("aweocmeicmweiacmiwecj")
+                let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
+                print (same)
+                let dict = self.convertToDictionary(text: same)
+                print (dict?["response"])
+                self.ref.child("users").child(userID).child("skintone").setValue(dict?["response"])
+                
+                do {
+                    print("jkasdfjkaslkSDJFIOAJDFKL")
+                    print(data!)
+                    // set that as their pigment color
+                }
+                catch {
+                    print("error in JSONSerialization")
+                }
+            }
+        })
+        task.resume()
+    }
+    
+    func convertToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return nil
     }
     
     override func viewDidLoad() {
