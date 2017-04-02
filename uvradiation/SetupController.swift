@@ -19,7 +19,7 @@ import Darwin
 var maxVitaminD = 0.0
 
 
-class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate {
+class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, UITextFieldDelegate {
     var ref = FIRDatabase.database().reference()
     @IBOutlet var weightValue: UITextField!
     
@@ -132,12 +132,9 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
                 // success
             else {
                 print ("success")
-                print (String(describing:data!))
                 let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
                 print (same) //correc tindex
-                self.ref.child("users").child(userID).setValue([
-                    "skintone": same,
-                ])
+                self.ref.child("users").child(userID).child("skintone").setValue(same)
                 
                 do {
                     print("jkasdfjkaslkSDJFIOAJDFKL")
@@ -154,11 +151,17 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.weightValue.delegate = self
         print ("AORWEFKJOACWEICMEICMEJCJECIOWEDC")
         locationManager.startUpdatingLocation()
     }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
     
-   }
+}
 
 
 extension UIView {

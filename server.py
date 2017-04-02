@@ -154,11 +154,15 @@ def reseto():
 
 @get('/update')
 def update():
-    global action
     print "got here"
-    print request
-    print same
-    userid = same["user"]
+    print "hallo"
+    userid = request.GET.get('userid')
+    userid = request.GET.get('userid')
+    userid = request.GET.get('userid')
+    userid = request.GET.get('userid')
+    userid = request.GET.get('userid')
+
+
     action = same["action"]
     skin = same["skin"]
     index = same["index"]

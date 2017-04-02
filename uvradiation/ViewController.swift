@@ -67,22 +67,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         print("locations = \(locValue.latitude) \(locValue.longitude)")
         print ("got here")
         ref.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("speed").setValue(locationManager.location!.speed)
-        
-        if(locationManager.location!.speed > 0 || locationManager.location!.speed < 0) {
+        print(locationManager.location!.speed)
+        if(locationManager.location!.speed > -100) {
             self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
                 print("got into here")
-
+                print (FIRAuth.auth()!.currentUser!.uid)
                 if let same = snapshot.value as? [String:AnyObject]{
                     print("got into here")
-
+                    print(same)
                     if let weight = same["weight"] as? String{
-                        print("got into here")
 
                         if let skintone = same["skintone"] as? String{
-                            print("got into here")
 
                             let url2 = URL(string: String("http://41e888fa.ngrok.io/update?userid=\(FIRAuth.auth()!.currentUser!.uid)&action=stop&index=\(self.currentUVIndex)&weight=\(weight)&skin=\(skintone)"))
-                            print("got into here")
+                            
                             // Handle api calls
                             let task = self.session.dataTask(with: url2!, completionHandler: {
                                 (data, response, error) in
@@ -130,7 +128,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                                 }
                             })
                             task.resume()
-                            
                         }
                     }
                 }
