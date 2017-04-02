@@ -106,7 +106,7 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" editable="NO" text="Hey, you've accomplished 0% of your total vitamin D necessaities" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kwz-tV-buG">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" editable="NO" text="Hey, you've had 0% of your necessary vitamin D intake. " textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kwz-tV-buG">
                                 <rect key="frame" x="41" y="109" width="293" height="103"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.38887169960000001" green="0.59068608280000001" blue="0.85495400430000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
