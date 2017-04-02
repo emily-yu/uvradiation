@@ -31,7 +31,6 @@ def getUrl(path):
     }
 
     same = requests.post('http://uploads.im/api', files=files)
-
     data = same.text
     json1_data = json.loads(data)
     return json1_data["data"]["img_url"]
@@ -40,6 +39,7 @@ global action
 
 def timer(action, uid, rate, capacity):
     start = time.time()
+    print start
     time.clock()
     elapsed = 0;
     while action == "start":
@@ -47,10 +47,10 @@ def timer(action, uid, rate, capacity):
         elapsed = elapsed * rates;
         time.sleep(1)
     if elapsed >= elapsed:
-        time = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json').read()
+        time2 = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json').read()
         total = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'totalTime.json').read()
 
-        newTime = elapsed + time;
+        newTime = elapsed + time2;
         totalTime = elapsed + total;
 
         same = newTime
@@ -59,10 +59,10 @@ def timer(action, uid, rate, capacity):
         r = requests.put('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json', data=same)
         r2 = requests.put('https://uvdetection.firebaseio.com/users' + uid + 'totalTime.json', data = same1);
     if action == "stop":
-        time = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json').read()
+        time3 = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'dayTime.json').read()
         total = urllib2.urlopen('https://uvdetection.firebaseio.com/users/' + uid + 'totalTime.json').read()
 
-        newTime = elapsed + time;
+        newTime = elapsed + time3;
         totalTime = elapsed + total;
 
         same = newTime
@@ -157,23 +157,14 @@ def update():
     print "got here"
     print "hallo"
     userid = request.GET.get('userid')
-    userid = request.GET.get('userid')
-    userid = request.GET.get('userid')
-    userid = request.GET.get('userid')
-    userid = request.GET.get('userid')
+    action = request.GET.get('action')
+    skin = request.GET.get('skin')
+    index = request.GET.get('index')
+    weight = request.GET.get('weight')
 
-
-    action = same["action"]
-    skin = same["skin"]
-    index = same["index"]
-    weight = same["weight"]
-    print userid
-    print action
-    print skin
-    print index
-    print weight
-    capacity = weight*27.0*0.8
-    rate = uvIndex *15
+    capacity = int(weight)*27.0*0.8
+    print (index)
+    rate = float(index) *15
 
     timer(action, userid, rate, capacity)
     return {"HALLO", "ya"}
