@@ -163,6 +163,11 @@ def update():
     skin = same["skin"]
     index = same["index"]
     weight = same["weight"]
+    print userid
+    print action
+    print skin
+    print index
+    print weight
     capacity = weight*27.0*0.8
     rate = uvIndex *15
 

@@ -68,34 +68,39 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         print ("got here")
         ref.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("speed").setValue(locationManager.location!.speed)
         
-        if(locationManager.location!.speed > 3 && locationManager.location!.speed < 30) {
+        if(locationManager.location!.speed > 0 || locationManager.location!.speed < 0) {
             self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-                if let same = snapshot.value! as? Double{
-                    var weightFB = same
-                    if let same = snapshot.value as? [String:AnyObject]{
-                        if let weight = same["weight"]{
-                            if let skintone = same["skintone"]{
-                                let url2 = URL(string: String("http://41e888fa.ngrok.io/update?userid=\(FIRAuth.auth()!.currentUser!.uid)&action=stop&index=\(self.currentUVIndex)&weight=\(weight)&skin=\(skintone)"))
+                print("got into here")
+
+                if let same = snapshot.value as? [String:AnyObject]{
+                    print("got into here")
+
+                    if let weight = same["weight"] as? String{
+                        print("got into here")
+
+                        if let skintone = same["skintone"] as? String{
+                            print("got into here")
+
+                            let url2 = URL(string: String("http://41e888fa.ngrok.io/update?userid=\(FIRAuth.auth()!.currentUser!.uid)&action=stop&index=\(self.currentUVIndex)&weight=\(weight)&skin=\(skintone)"))
+                            print("got into here")
+                            // Handle api calls
+                            let task = self.session.dataTask(with: url2!, completionHandler: {
+                                (data, response, error) in
                                 
-                                // Handle api calls
-                                let task = self.session.dataTask(with: url2!, completionHandler: {
-                                    (data, response, error) in
-                                    
-                                    // if no error
-                                    if error != nil {
-                                        print(error!.localizedDescription)
-                                    }
-                                        // success
-                                    else {
-                                        print ("success")
-                                        print (String(describing:data!))
-                                        let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
-                                        print (same) //correc tindex
-                                    }
-                                })
-                                task.resume()
-                                
-                            }
+                                // if no error
+                                if error != nil {
+                                    print(error!.localizedDescription)
+                                }
+                                    // success
+                                else {
+                                    print ("success")
+                                    print (String(describing:data!))
+                                    let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
+                                    print (same) //correc tindex
+                                }
+                            })
+                            task.resume()
+                            
                         }
                     }
                 }
@@ -103,32 +108,29 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
         else{
             self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-                if let same = snapshot.value! as? Double{
-                    var weightFB = same
-                    if let same = snapshot.value as? [String:AnyObject]{
-                        if let weight = same["weight"]{
-                            if let skintone = same["skintone"]{
-                                let url2 = URL(string: String("http://41e888fa.ngrok.io/update?userid=\(FIRAuth.auth()!.currentUser!.uid)&action=start&index=\(self.currentUVIndex)&weight=\(weight)&skin=\(skintone)"))
+                if let same = snapshot.value as? [String:AnyObject]{
+                    if let weight = same["weight"]{
+                        if let skintone = same["skintone"]{
+                            let url2 = URL(string: String("http://41e888fa.ngrok.io/update?userid=\(FIRAuth.auth()!.currentUser!.uid)&action=start&index=\(self.currentUVIndex)&weight=\(weight)&skin=\(skintone)"))
+                            
+                            // Handle api calls
+                            let task = self.session.dataTask(with: url2!, completionHandler: {
+                                (data, response, error) in
                                 
-                                // Handle api calls
-                                let task = self.session.dataTask(with: url2!, completionHandler: {
-                                    (data, response, error) in
-                                    
-                                    // if no error
-                                    if error != nil {
-                                        print(error!.localizedDescription)
-                                    }
-                                        // success
-                                    else {
-                                        print ("success")
-                                        print (String(describing:data!))
-                                        let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
-                                        print (same) //correc tindex
-                                    }
-                                })
-                                task.resume()
-                                
-                            }
+                                // if no error
+                                if error != nil {
+                                    print(error!.localizedDescription)
+                                }
+                                    // success
+                                else {
+                                    print ("success")
+                                    print (String(describing:data!))
+                                    let same:String = String.init(data: data!, encoding: String.Encoding.utf8)!
+                                    print (same) //correc tindex
+                                }
+                            })
+                            task.resume()
+                            
                         }
                     }
                 }
