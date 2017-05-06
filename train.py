@@ -30,6 +30,7 @@ def get_image(image_path):
 
 def transform(image, npx=512, is_crop=True):
     cropped_image = cv2.resize(image, (64,64))
+
     return np.array(cropped_image)
 
 def imread(path):
@@ -48,8 +49,8 @@ def save(checkpoint_dir, step):
 
 sess = tf.Session()
 
-x = tf.placeholder(tf.float32, shape=[10, 64, 64, 3])
-y_ = tf.placeholder(tf.float32, shape=[10, 2])
+x = tf.placeholder(tf.float32, shape=[8, 64, 64, 3])
+y_ = tf.placeholder(tf.float32, shape=[8, 2])
 
 W_conv1 = weight_variable([5, 5, 3, 64])
 b_conv1 = bias_variable([64])
@@ -89,14 +90,15 @@ correct_prediction = tf.equal(tf.argmax(y_conv,1), tf.argmax(y_,1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
 
 
-sess.run(tf.initialize_all_variables())
+sess.run(tf.global_variables_initializer())
 
 si = 2;
 sl = ["y","n"]
 sn = ["malignant","benign"]
+length = 192
 
-batch = np.zeros((si*6,1024))
-labels = np.zeros((si*6,si))
+batch = np.zeros((si*192,1024))
+labels = np.zeros((si*192,si))
 
 dataB = glob(os.path.join("benign", "*.png"))
 
@@ -104,55 +106,47 @@ dataB = glob(os.path.join("benign", "*.png"))
 dataM = glob(os.path.join("malignant", "*.png"))
 # baseDog_normalized = base/255.0
 
-batchsize = 10
+batchsize = 8
 
 saver = tf.train.Saver()
 
 if sys.argv[1] == "train":
 	for i in range(20000):
-		batch_index_start = (i*batchsize/2) % 120 
-		batch_index_end = ((i+1)*batchsize/2) % 120
+		for b in range(length//batchsize):	
+			# batch_index_start = (i*batchsize/2) % 192 
+			# batch_index_end = ((i+1)*batchsize/2) % 192
 
-		if batch_index_end < batch_index_start:
-			batch_files = dataB[batch_index_start:] + dataM[:batch_index_end]
-		else:
-			batch_files = dataB[batch_index_start:batch_index_end]
+			batch_files = dataB[b*batchsize/2:(b+1)*batchsize/2]
+			batch = np.array([get_image(batch_file) for batch_file in batch_files])
 
-		batch = np.array([get_image(batch_file) for batch_file in batch_files])
-		print "line129", batch.shape
+			batch_files2 = dataM[b*batchsize/2:(b+1)*batchsize/2]
+			batch2 = np.array([get_image(batch_file2) for batch_file2 in batch_files2])
+			print "line133", batch2.shape
 
-		if batch_index_end < batch_index_start:
-			batch_files2 = dataM[batch_index_start:] + dataB[:batch_index_end]
-		else:
-			batch_files2 = dataM[batch_index_start:batch_index_end]
-		# batch_files2 = dataMelonoma[i*batchsize/3:(i+1)*batchsize/3]
-		batch2 = np.array([get_image(batch_file2) for batch_file2 in batch_files2])
-		print "line133", batch2.shape
+			bigArray = np.concatenate((batch, batch2), axis=0)
+			print "line140", bigArray.shape
 
-		bigArray = np.concatenate((batch, batch2), axis=0)
-		print "line140", bigArray.shape
-		bigArray = bigArray/225.0
+			labels = np.zeros((batchsize, 2))
+			print "line143", labels.shape
+			labels[0:4,0] = 1;
+			labels[4:8,1] = 1;
 
-		labels = np.zeros((batchsize, 2))
-		print "line143", labels.shape
-		labels[0:5,0] = 1;
-		labels[5:10,1] = 1;
+			train_step.run(session=sess, feed_dict={x: bigArray, y_: labels, keep_prob: 0.5})
+			if i%10 == 0:
+				train_accuracy = accuracy.eval(session=sess,feed_dict={x:bigArray, y_: labels, keep_prob: 1.0})
+				print "epoch %d, step %d, training accuracy %g"%(i, b, train_accuracy)
 
-		train_step.run(session=sess, feed_dict={x: bigArray, y_: labels, keep_prob: 0.5})
-		if i%10 == 0:
-			train_accuracy = accuracy.eval(session=sess,feed_dict={x:bigArray, y_: labels, keep_prob: 0.5})
-			print "step %d, training accuracy %g"%(i, train_accuracy)
+			if i%50 == 0:
+				saver.save(sess, "/Users/kevin/desktop/uvradiation/training/training.ckpt", global_step=i)
 
-		if i%50 == 0:
-			saver.save(sess, "/Users/kevin/desktop/uvradiation/training/tr/training.ckpt", global_step=i)
-
-        train_step.run(feed_dict={x: batch, y_: labels, keep_prob: 0.5})
 elif sys.argv[1] == "server":
     print "server"
 else:
-	saver.restore(sess, tf.train.latest_checkpoint("/Users/kevin/desktop/uvradiation/training/tr/training.ckpt"))
-	batch = np.zeros((1,1024))
-	batch[0] = misc.imread(sys.argv[1]).flatten()
+	saver.restore(sess, tf.train.latest_checkpoint("/Users/kevin/desktop/uvradiation/training/training.ckpt-0.meta"))
+	batch = np.zeros((1,4096))
+	print sys.argv[1]
+	batch[0] = get_image(sys.argv[1])
+
 	pr = y_conv.eval(feed_dict={x: batch, y_: labels, keep_prob: 1.0})
 	value = sl[np.argmax(pr[0])];
 	print sn[np.argmax(pr)];

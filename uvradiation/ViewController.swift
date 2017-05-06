@@ -20,7 +20,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     // OpenWeatherAPI
     private let openWeatherMapBaseURL = "http://api.openweathermap.org/v3/uvi/"
-    private let ngrok = "http://41e888fa.ngrok.io"
+    private let ngrok = "http://0ca85025.ngrok.io"
     private let openWeatherMapAPIKey = "3b4d5042582e6a05ef5feaa2d9ef4d0d" // <YOUR API KEY>
     private var latNumb:Int!
     private var longNumb:Int!
@@ -69,7 +69,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         ref.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("speed").setValue(locationManager.location!.speed)
         print(locationManager.location!.speed)
         var signalSign:Bool = getSignalStrength()
-        if((locationManager.location!.speed > 3 && locationManager.location.speed < 27) || signalSign == true) {
+        if((locationManager.location!.speed > 3 && locationManager.location!.speed < 27) || signalSign == true) {
             self.start()
 //            self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
 //                print("got into here")
@@ -317,7 +317,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let date = NSDate().timeIntervalSince1970
         let userID = FIRAuth.auth()?.currentUser?.uid
 
-        let url = URL(string: String("http://41e888fa.ngrok.io/end?userid=\(userID!)&index=\(self.currentUVIndex)&date=\(date)"))
+        let url = URL(string: String("http://0ca85025.ngrok.io/end?userid=\(userID!)&index=\(self.currentUVIndex)&date=\(date)"))
         print(date)
         print(currentUVIndex)
         print(userID!)

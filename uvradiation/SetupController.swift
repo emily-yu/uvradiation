@@ -146,7 +146,7 @@ class SetupController: UIViewController, UIImagePickerControllerDelegate, UINavi
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "Home")
         self.present(vc!, animated: true, completion: nil)
         // skin color stuff
-        let url = URL(string: String("http://41e888fa.ngrok.io/login?userid=\(userID)"))
+        let url = URL(string: String("http://0ca85025.ngrok.io/login?userid=\(userID)"))
         print(url)
         
         // Handle api calls
