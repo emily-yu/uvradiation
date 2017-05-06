@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="wDX-TO-tYE">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="wDX-TO-tYE">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -106,7 +106,7 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" editable="NO" text="Hey, you've accomplished 0% of your total vitamin D necessaities" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kwz-tV-buG">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" editable="NO" text="Hey, you've had 0% of your necessary vitamin D intake. " textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kwz-tV-buG">
                                 <rect key="frame" x="41" y="109" width="293" height="103"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.38887169960000001" green="0.59068608280000001" blue="0.85495400430000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -115,7 +115,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="54h-4J-D81">
-                                <rect key="frame" x="41" y="209" width="293" height="320"/>
+                                <rect key="frame" x="41" y="209" width="293" height="376"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Total Vitamin D Intake" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="la5-7C-P7d">
@@ -163,14 +163,6 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.48476722840000003" green="0.65822982789999995" blue="0.89024066930000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tax-Tq-iJm">
-                                <rect key="frame" x="41" y="549" width="293" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.48476722836494446" green="0.65822982788085938" blue="0.89024066925048828" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <state key="normal" title="Test Yourself for Cancer">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.38887169960000001" green="0.59068608280000001" blue="0.85495400430000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </view>

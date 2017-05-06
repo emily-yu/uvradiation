@@ -69,7 +69,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         ref.child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("speed").setValue(locationManager.location!.speed)
         print(locationManager.location!.speed)
         var signalSign:Bool = getSignalStrength()
+<<<<<<< HEAD
         if((locationManager.location!.speed > 3 && locationManager.location!.speed < 27) || signalSign == true) {
+=======
+        if((locationManager.location!.speed > 3 && Int((locationManager.location?.speed)!) < 27) || signalSign == true) {
+>>>>>>> e21128f189a4ab64402cb268773a477afda8e60b
             self.start()
 //            self.ref.child("users").child(FIRAuth.auth()!.currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
 //                print("got into here")
